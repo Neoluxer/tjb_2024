@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
   bot:
@@ -38,12 +38,12 @@ services:
     image: postgres:15.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - postgres_data:\Program Files\PostgreSQL\16\data
     restart: always
     container_name: ${PROJECT_NAME}-db
     env_file: .env
     ports:
-    - 8090:8090
-
+      - "54321:5432"
 
 
   redis:
