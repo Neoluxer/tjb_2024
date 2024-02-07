@@ -1,11 +1,13 @@
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
+from tgbot.keyboards.menu import start_menu
 
 from tgbot.models.commands import add_or_create_user
 
 
 async def user_start(message: Message, state: FSMContext):
+    await message.answer("!",reply_markup=start_menu)
     await state.finish()
     async with state.proxy() as data:
         data['last_command'] = 'start'

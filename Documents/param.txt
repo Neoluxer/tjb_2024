@@ -1,0 +1,89 @@
+Введите имя нового клиента "name"
+Введите email клиента "email"
+Введите телефон клиента "phone"
+Введите площадь "area"
+Дополнительное описание "description"
+Откуда о нас узнал заказчик? "source"
+Какой город в котором объект? "city"
+Какая нужна услуга? "service"
+Какая озвучена стоимость? "price"
+Это новый клиент? (1-да/0-нет)? "isnew "
+
+input_clients_name (*)
+input_clients_email (lidsStates.INPUT_EMAIL)
+input_clients_phone (LidsStates.INPUT_PHONE)
+input_area (LidsStates.INPUT_AREA)
+input_description (LidsStates.INPUT_DESCRIPTION)
+input_source  (LidsStates.INPUT_SOURCE)
+input_city (LidsStates.INPUT_CITY)
+input_service (LidsStates.INPUT_SERVICE)
+input_price (LidsStates.INPUT_PRICE)
+final (LidsStates.INPUT_IS_NEW)
+
+USERS
+id (int4)
+name (varchar(255))
+email (varchar(255))
+town (varchar(255))
+telephone (varchar(255))
+area (int4)
+description (varchar(255))
+source (varchar(255))
+what_service (varchar(255))
+our_price (int4)
+new (int4)
+date_now (char(100))
+result (text)
+
+name: Георгий
+email: mail@maul.ru  True
+town: None  False -ok
+telephone:+7978064779  True
+area:350  False
+description: Описание заявки  True
+source: Сайт  True
+what_service: Чертежи  True
+our_price: None  False
+new:1  True
+result:none  True
+
+-------------------------------------
+
+profit_norm_perm # Норма прибыли в месяц
+overheadPerM # Расходы без УСН налога (6%) и без Аренды офиса
+wageOfDesigner # Гонорар дизайнера за квадрат
+wageOfDraftsmen # Гонорар чертёжника за квадрат
+USN=0.06*PlaniruemiYProfit # Налог УСН
+StoimostRaspechatkiProject=15*4*int(n) # Стоимость распечатки проекта
+
+from_db = Constants.objects.get(key='profit_norm_perm_max')
+value = from_db.value
+
+---------------------------------------
+
+1.Введите площадь
+2.Введите кол-во комнат
+3. Укажите состав проекта
+4. Кол-во дизайнеров
+5. Кол-во чертёжников
+
+answer_q1  (PriceList.Q1)
+answer_q2  (PriceList.Q2)
+answer_q3 (PriceList.Q3)
+answer_q4 (PriceList.Q4)
+answer_q5  (PriceList.Q5)
+
+----------------------------------------
+
+start_making_contract Q0
+answer_q1 Q1
+answer_q2
+answer_q3
+answer_q4
+answer_q5
+answer_q6
+answer_q7
+answer_q8
+answer_q20 Q20
+
+Цену обернуть в try-except сделать проверку на численность
