@@ -62,7 +62,7 @@ async def main():
     )
     logger.info("Starting bot")
     setup_django()
-    config = load_config(".env.distr")
+    config = load_config(".env")
 
     storage = RedisStorage2(config.redis.host, config.redis.port, db=5, pool_size=10, prefix='bot_fsm') \
         if config.redis.use_redis else MemoryStorage()

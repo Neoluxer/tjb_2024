@@ -13,7 +13,11 @@ from tgbot.models.contract_class import Contract
 from tgbot.models.commands import add_private_contract
 from tgbot.models.commands import add_private_person
 
-number_of_last_invoice = PrivateContract.objects.latest('id')
+try:
+    number_of_last_invoice = PrivateContract.objects.latest('id')
+except:
+    number_of_last_invoice = 0
+
 
 
 

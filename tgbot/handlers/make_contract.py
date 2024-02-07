@@ -14,8 +14,11 @@ from tgbot.models.commands import add_private_contract
 from tgbot.models.commands import add_private_person
 from tgbot.models.contract_class import Contract
 
+try:
+    number_of_last_invoice = PrivateContract.objects.latest('id')
+except:
+    number_of_last_invoice = 0
 
-number_of_last_invoice = PrivateContract.objects.latest('id')
 
 
 root_path = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\media\\files'
