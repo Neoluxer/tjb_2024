@@ -3,13 +3,13 @@ from dataclasses import dataclass
 from environs import Env
 
 
-# @dataclass
-# class DbConfig:
-#     host: str
-#     password: str
-#     user: str
-#     name: str
-#     port: str
+@dataclass
+class DbConfig:
+    host: str
+    password: str
+    user: str
+    name: str
+    port: str
 
 
 @dataclass
@@ -17,13 +17,13 @@ class Redis:
     use_redis: bool
     host: str
     port: str
-    password: str | None
+    password: str
 
 
 @dataclass
 class TgBot:
     token: str
-    admin_ids: list[int]
+    admin_ids: [958482521]
 
 
 @dataclass
@@ -35,7 +35,7 @@ class Miscellaneous:
 class Config:
     tg_bot: TgBot
     redis: Redis
-    # db: DbConfig
+    db: DbConfig
     misc: Miscellaneous
 
 
@@ -54,12 +54,12 @@ def load_config(path: str = None):
             password=env.str("REDIS_PASSWORD"),
             use_redis=env.bool("USE_REDIS", 'False')
         ),
-        # db=DbConfig(
-        #     host=env.str('POSTGRES_HOST'),
-        #     password=env.str('POSTGRES_PASSWORD'),
-        #     user=env.str('POSTGRES_USER'),
-        #     name=env.str('POSTGRES_DB'),
-        #     port=env.str('POSTGRES_PORT')
-        # ),
+        db=DbConfig(
+            host=env.str('POSTGRES_HOST'),
+            password=env.str('POSTGRES_PASSWORD'),
+            user=env.str('POSTGRES_USER'),
+            name=env.str('POSTGRES_DB'),
+            port=env.str('POSTGRES_PORT')
+        ),
         misc=Miscellaneous()
     )

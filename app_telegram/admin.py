@@ -3,6 +3,7 @@ from django.contrib import admin
 from app_telegram.models import TGUser
 
 
+
 class TGUserAdmin(admin.ModelAdmin):
     list_display = ['tg_id', 'created']
     list_filter = ['created', ]
@@ -10,4 +11,5 @@ class TGUserAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
-admin.site.register(TGUser, TGUserAdmin)
+admin.site.register(TGUser)
+

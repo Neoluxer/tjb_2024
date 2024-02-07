@@ -45,6 +45,13 @@ INSTALLED_APPS = [
     # 'django.contrib.postgres',
 
     'app_telegram.apps.AppTelegramConfig',
+    'addprofit.apps.AddprofitConfig',
+    'lids.apps.LidsConfig',
+    'invoice.apps.InvoiceConfig',
+    'customer.apps.CustomerConfig',
+    'addproject.apps.AddprojectConfig',
+    'make_contract_base.apps.MakeContractConfig',
+    'constants.apps.ConstantsConfig',
 
 ]
 
@@ -85,7 +92,8 @@ WSGI_APPLICATION = 'dj_ac.wsgi.application'
 POSTGRES_DB = os.environ.get('POSTGRES_DB')
 POSTGRES_USER = os.environ.get('POSTGRES_USER')
 POSTGRES_PASS = os.environ.get('POSTGRES_PASSWORD')
-POSTGRES_HOST = "db"
+#POSTGRES_HOST = "db"
+POSTGRES_HOST = "localhost"
 POSTGRES_PORT = 5432
 
 DATABASES = {
@@ -122,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Europe/Moscow'
 
@@ -134,9 +142,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'

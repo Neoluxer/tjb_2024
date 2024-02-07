@@ -42,7 +42,9 @@ services:
     container_name: ${PROJECT_NAME}-db
     env_file: .env
     ports:
-      - 5433:5432
+    - 8090:8090
+
+
 
   redis:
     container_name: ${PROJECT_NAME}-redis
