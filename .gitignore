@@ -60,7 +60,7 @@ venv.bak/
 # Pyre type checker
 .pyre/
 .idea/*
-#.env
+#.env.distr
 .DS_Store
 
 # Database

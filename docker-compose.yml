@@ -15,7 +15,7 @@ services:
       - db
       - redis
       - web
-    env_file: .env
+    env_file: .env.distr
 
   web:
     container_name: ${PROJECT_NAME}-web
@@ -32,7 +32,7 @@ services:
     depends_on:
       - db
       - redis
-    env_file: .env
+    env_file: .env.distr
 
   db:
     image: postgres:15.0-alpine
@@ -41,7 +41,7 @@ services:
       - postgres_data:\Program Files\PostgreSQL\16\data
     restart: always
     container_name: ${PROJECT_NAME}-db
-    env_file: .env
+    env_file: .env.distr
     ports:
       - "54321:5432"
 
@@ -51,7 +51,7 @@ services:
     image: redis:7.2-rc3-alpine
     restart: always
     env_file:
-      - .env
+      - .env.distr
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
     expose:
