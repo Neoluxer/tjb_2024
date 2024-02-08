@@ -189,20 +189,20 @@ async def answer_q5(message: types.Message, state: FSMContext):
             r_m = newInterior_max.time_of_blueprints()
             o_m = newInterior_max.overhead()
             p_m = newInterior_max.project_parts()
-        except Exception as e:
-            await message.answer(str(e))
 
 
-        try:
             await message.answer(
                 f'<b>Время на визуализацию</b>: {t}\n<b>Время на чертежи:</b> {r}\n<b>Общее время:</b> {t + r}'
                 f'\n<b>Цена за м.кв.минимальная:</b> '
                 f'{o}<b>Часть проекта:</b> {p}\n'
                 f'<b>Состав проекта:</b> {newInterior_min.content}')
             await state.reset_state(with_data=True)
+
         except Exception as e:
             await message.answer(str(e))
-            await state.reset_state(with_data=True)
+
+
+
 
     else:
         await message.answer('Введите числовое значение!')
