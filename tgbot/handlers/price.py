@@ -2,7 +2,6 @@ from aiogram import Dispatcher
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardRemove
-
 from Classes.CalcClasses import ProjectPrice
 from tgbot.keyboards.uslugi import *
 from tgbot.misc.price_list import PriceList
@@ -14,12 +13,8 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 
 async def price_start(message: types.Message, state: FSMContext):
-    if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.full_name == 'Olga Zavada':
-        await message.answer('Введите площадь (200):')
-        await state.set_state(PriceList.Q1)
-    else:
-        # await state.reset_state(with_data=True)
-        await state.set_state(PriceList.Q1)
+    await message.answer('Введите площадь (200):')
+    await state.set_state(PriceList.Q1)
 
 
 async def answer_q1(message: types.Message, state: FSMContext):
@@ -199,6 +194,7 @@ async def answer_q5(message: types.Message, state: FSMContext):
 
         except Exception as e:
             await message.answer(str(e))
+            await state.reset_state(with_data=True)
 
 
     else:
