@@ -19,7 +19,9 @@ async def price_start(message: types.Message, state: FSMContext):
         await state.set_state(PriceList.Q1)
     else:
         await message.answer("У Вас нет разрешения")
-        await state.reset_state(with_data=True)
+       # await state.reset_state(with_data=True)
+    await message.answer('Введите площадь (200):')
+    await state.set_state(PriceList.Q1)
 
 
 async def answer_q1(message: types.Message, state: FSMContext):
