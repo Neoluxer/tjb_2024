@@ -13,13 +13,14 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Действие отменено")
 
+
 async def price_start(message: types.Message, state: FSMContext):
     if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.full_name == 'Olga Zavada':
         await message.answer('Введите площадь (200):')
         await state.set_state(PriceList.Q1)
     else:
         await message.answer("У Вас нет разрешения")
-       # await state.reset_state(with_data=True)
+    # await state.reset_state(with_data=True)
     await message.answer('Введите площадь (200):')
     await state.set_state(PriceList.Q1)
 
@@ -145,7 +146,6 @@ async def answer_q4(message: types.Message, state: FSMContext):
 
 
 async def answer_q5(message: types.Message, state: FSMContext):
-
     wageOfDraftsmen = int(Constants.objects.get(key='wageOfDraftsmen').value)
     wageOfDesigner = int(Constants.objects.get(key='wageOfDesigner').value)
     from_db = Constants.objects.get(key='profit_norm_perm_max')
@@ -178,23 +178,16 @@ async def answer_q5(message: types.Message, state: FSMContext):
                                        wage_of_designer=wageOfDesigner,
                                        wage_of_draftsmen=wageOfDraftsmen, time_of_one_vis=nov)
 
-        t = newInterior_min.time_of_visualization(newInterior_min.spaces, newInterior_min.designers)
-        r = newInterior_min.time_of_blueprints(newInterior_min.spaces, newInterior_min.draftsmen)
-        o = newInterior_min.overhead(newInterior_min.square, newInterior_min.time_of_visualization(newInterior_min.spaces,
-                                                                                                   newInterior_min.designers),
-                                     newInterior_min.time_of_blueprints(newInterior_min.spaces,
-                                                                        newInterior_min.draftsmen))
+        t = newInterior_min.time_of_visualization()
+        r = newInterior_min.time_of_blueprints()
+        o = newInterior_min.overhead()
         p = newInterior_min.project_parts()
 
-        o1 = newInterior_max.overhead(newInterior_max.square,
-                                      newInterior_min.time_of_visualization(newInterior_max.spaces,
-                                                                            newInterior_max.designers),
-                                      newInterior_max.time_of_blueprints(newInterior_max.spaces,
-                                                                         newInterior_max.draftsmen))
         try:
             await message.answer(
-                f'<b>Время на визуализацию</b>: {t}\n<b>Время на чертежи:</b> {r}\n<b>Общее время:</b> {t + r}\n<b>Цена за м.кв.минимальная:</b> {o}\n'
-                f'<b>Цена за м.кв. максимальная:</b> {o1}\n<b>Часть проекта:</b> {p}\n'
+                f'<b>Время на визуализацию</b>: {t}\n<b>Время на чертежи:</b> {r}\n<b>Общее время:</b> {t + r}'
+                f'\n<b>Цена за м.кв.минимальная:</b> '
+                f'{o}<b>Часть проекта:</b> {p}\n'
                 f'<b>Состав проекта:</b> {newInterior_min.content}')
             await state.reset_state(with_data=True)
         except Exception as e:
@@ -204,7 +197,9 @@ async def answer_q5(message: types.Message, state: FSMContext):
     else:
         await message.answer('Введите числовое значение!')
         await PriceList.previous()
-#todo сделать расчет параллельной работы
+
+
+# todo сделать расчет параллельной работы
 
 def register_price(dp: Dispatcher):
     dp.register_message_handler(cmd_cancel, commands=["cancel"], state="*")
