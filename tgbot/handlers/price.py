@@ -165,7 +165,7 @@ async def answer_q5(message: types.Message, state: FSMContext):
 
         newInterior_min = ProjectPrice(square=int(answer), spaces=int(answer2), typeof=1, content=answer3,
                                        designers=int(answer4),
-                                       draftsmen=int(answer5), profit_norm_perm=profit_norm_perm_min,
+                                       draftsmen=int(answer5), profit_norm_perm=int(profit_norm_perm_min)-50000,
                                        wage_of_designer=wageOfDesigner,
                                        wage_of_draftsmen=wageOfDraftsmen, time_of_one_vis=nov)
 
@@ -174,25 +174,35 @@ async def answer_q5(message: types.Message, state: FSMContext):
 
         newInterior_max = ProjectPrice(square=int(answer), spaces=int(answer2), typeof=1, content=answer3,
                                        designers=int(answer4),
-                                       draftsmen=int(answer5), profit_norm_perm=profit_norm_perm_max,
+                                       draftsmen=int(answer5), profit_norm_perm=int(profit_norm_perm_min)+50000,
                                        wage_of_designer=wageOfDesigner,
                                        wage_of_draftsmen=wageOfDraftsmen, time_of_one_vis=nov)
 
-        t = newInterior_min.time_of_visualization()
-        r = newInterior_min.time_of_blueprints()
-        o = newInterior_min.overhead()
-        p = newInterior_min.project_parts()
 
         try:
+            t = newInterior_min.time_of_visualization()
+            r = newInterior_min.time_of_blueprints()
+            o = newInterior_min.overhead()
+            p = newInterior_min.project_parts()
+
+            t_m = newInterior_max.time_of_visualization()
+            r_m = newInterior_max.time_of_blueprints()
+            o_m = newInterior_max.overhead()
+            p_m = newInterior_max.project_parts()
+
+
             await message.answer(
                 f'<b>Время на визуализацию</b>: {t}\n<b>Время на чертежи:</b> {r}\n<b>Общее время:</b> {t + r}'
                 f'\n<b>Цена за м.кв.минимальная:</b> '
                 f'{o}<b>Часть проекта:</b> {p}\n'
                 f'<b>Состав проекта:</b> {newInterior_min.content}')
             await state.reset_state(with_data=True)
+
         except Exception as e:
             await message.answer(str(e))
-            await state.reset_state(with_data=True)
+
+
+
 
     else:
         await message.answer('Введите числовое значение!')
