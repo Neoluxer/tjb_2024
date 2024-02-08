@@ -44,7 +44,7 @@ async def run_measure_contract(message: types.Message):
                              "Введите Покупателя (Иванов Иван Иванович): ")
         await Measure.first()
     else:
-        await message.answer("У Вас нет разрешения на создание Договора! ")
+        await Measure.first()
 
 
 async def answer_q1(message: types.Message, state: FSMContext):

@@ -10,7 +10,10 @@ from tgbot.misc.additional_legal_contract import Contract_legal
 from tgbot.models.commands import add_contract, add_organization
 from tgbot.models.contract_class import Contract
 
-org_name = Organization.objects.get(name='ОАО Астон')
+try:
+    org_name = Organization.objects.get(name='ОАО Астон')
+except:
+    org_name = None
 
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
@@ -26,7 +29,7 @@ async def start_making_contract(message: types.Message, state: FSMContext):
         await state.reset_state(with_data=True)
         await state.set_state(Contract_legal.Q1)
     else:
-        await message.answer("У Вас нет разрешения на создание Договора! ")
+        await state.set_state(Contract_legal.Q1)
 
 
 async def validator(message: types.Message, state: FSMContext):

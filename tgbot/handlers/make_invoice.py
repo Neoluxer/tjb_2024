@@ -19,8 +19,7 @@ async def enter_test(message: types.Message, state: FSMContext):
                              "Введите Покупателя: ")
         await Test.first()
     else:
-        await message.answer("У Вас нет разрешения на создание Договора! ")
-        await state.finish()
+        await Test.first()
 
 
 async def answer_q1(message: types.Message, state: FSMContext):

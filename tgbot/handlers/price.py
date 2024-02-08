@@ -4,7 +4,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 
 from Classes.CalcClasses import ProjectPrice
-from constants.models import Constants
 from tgbot.keyboards.uslugi import *
 from tgbot.misc.price_list import PriceList
 
@@ -19,10 +18,8 @@ async def price_start(message: types.Message, state: FSMContext):
         await message.answer('Введите площадь (200):')
         await state.set_state(PriceList.Q1)
     else:
-        await message.answer("У Вас нет разрешения")
-    # await state.reset_state(with_data=True)
-    await message.answer('Введите площадь (200):')
-    await state.set_state(PriceList.Q1)
+        # await state.reset_state(with_data=True)
+        await state.set_state(PriceList.Q1)
 
 
 async def answer_q1(message: types.Message, state: FSMContext):
@@ -146,12 +143,17 @@ async def answer_q4(message: types.Message, state: FSMContext):
 
 
 async def answer_q5(message: types.Message, state: FSMContext):
-    wageOfDraftsmen = int(Constants.objects.get(key='wageOfDraftsmen').value)
-    wageOfDesigner = int(Constants.objects.get(key='wageOfDesigner').value)
-    from_db = Constants.objects.get(key='profit_norm_perm_max')
-    profit_norm_perm_max = int(from_db.value)
-    profit_norm_perm_min = int(Constants.objects.get(key='profit_norm_perm_min').value)
-    nov = int(Constants.objects.get(key='timeOfVis').value)
+    # wageOfDraftsmen = int(Constants.objects.get(key='wageOfDraftsmen').value)
+    wageOfDraftsmen = 500
+    # wageOfDesigner = int(Constants.objects.get(key='wageOfDesigner').value)
+    wageOfDesigner = 1000
+    # from_db = Constants.objects.get(key='profit_norm_perm_max')
+    # profit_norm_perm_max = int(from_db.value)
+    profit_norm_perm_max = 300_000
+    # profit_norm_perm_min = int(Constants.objects.get(key='profit_norm_perm_min').value)
+    profit_norm_perm_min = 250_000
+    # nov = int(Constants.objects.get(key='timeOfVis').value)
+    nov = 1
 
     answer5 = message.text
     if answer5.isdigit():
@@ -165,43 +167,38 @@ async def answer_q5(message: types.Message, state: FSMContext):
 
         newInterior_min = ProjectPrice(square=int(answer), spaces=int(answer2), typeof=1, content=answer3,
                                        designers=int(answer4),
-                                       draftsmen=int(answer5), profit_norm_perm=int(profit_norm_perm_min)-50000,
+                                       draftsmen=int(answer5), profit_norm_perm=int(profit_norm_perm_min),
                                        wage_of_designer=wageOfDesigner,
                                        wage_of_draftsmen=wageOfDraftsmen, time_of_one_vis=nov)
+        await message.answer("Получилось создать экземпляр класса")
 
         """wageOfDesigner = 400  # Гонорар дизайнера за квадрат
         self.wageOfDraftsmen"""
 
         newInterior_max = ProjectPrice(square=int(answer), spaces=int(answer2), typeof=1, content=answer3,
                                        designers=int(answer4),
-                                       draftsmen=int(answer5), profit_norm_perm=int(profit_norm_perm_min)+50000,
+                                       draftsmen=int(answer5), profit_norm_perm=int(profit_norm_perm_max),
                                        wage_of_designer=wageOfDesigner,
                                        wage_of_draftsmen=wageOfDraftsmen, time_of_one_vis=nov)
-
+        await message.answer("Получилось создать экземпляр класса")
 
         try:
             t = newInterior_min.time_of_visualization()
             r = newInterior_min.time_of_blueprints()
             o = newInterior_min.overhead()
             p = newInterior_min.project_parts()
-
-            t_m = newInterior_max.time_of_visualization()
-            r_m = newInterior_max.time_of_blueprints()
             o_m = newInterior_max.overhead()
-            p_m = newInterior_max.project_parts()
-
 
             await message.answer(
-                f'<b>Время на визуализацию</b>: {t}\n<b>Время на чертежи:</b> {r}\n<b>Общее время:</b> {t + r}'
-                f'\n<b>Цена за м.кв.минимальная:</b> '
-                f'{o}<b>Часть проекта:</b> {p}\n'
-                f'<b>Состав проекта:</b> {newInterior_min.content}')
+                f'Время на визуализацию: {t}\nВремя на чертежи: {r}\nОбщее время: {t + r}'
+                f'\nЦена за м.кв.минимальная:{o}\n '
+                f'\nЦена за м.кв.максимальная:{o_m}\n'
+                f'Часть проекта: {p}\n'
+                f'Состав проекта: {newInterior_min.content}')
             await state.reset_state(with_data=True)
 
         except Exception as e:
             await message.answer(str(e))
-
-
 
 
     else:

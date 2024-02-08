@@ -49,7 +49,7 @@ async def run_default_contract(message: types.Message):
                              "Введите Покупателя (Иванов Иван Иванович): ")
         await Contract2.first()
     else:
-        await message.answer("У Вас нет разрешения на создание Договора! ")
+        await Contract2.first()
 
 
 async def answer_q1(message: types.Message, state: FSMContext):

@@ -87,3 +87,9 @@ answer_q8
 answer_q20 Q20
 
 Цену обернуть в try-except сделать проверку на численность
+
+timeOfVis	2	Время на одну визуализацию
+profit_norm_perm_min	280000	Минимальная норма прибыли
+profit_norm_perm_max	300000	Норма прибыли максимальная
+wageOfDesigner	1000	Стоимость работы дизайнера
+wageOfDraftsmen	500	Стоимость работы чертёжника
