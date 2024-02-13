@@ -38,3 +38,24 @@ docker-compose exec web sh -c "python manage.py createsuperuser"
 - Username: postgres
 - Password: postgres
 - Database: template-db
+
+## Подключение к Django admin удаленной по ip к серверу на Raspberry Pi
+http://192.168.31.150:8000/admin/
+0. sudo ifconfig
+1. В ipconfig посмотреть wlan0
+
+```bash
+sudo ifconfig
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install apache2 php5 liba
+sudo service apache2 restart
+sudo service apache2 status
+sudo service apache2 start
+
+```
+3. Логин и пароль задаются 
+
+```bash
+docker-compose exec web sh -c "python manage.py createsuperuser"
+```
