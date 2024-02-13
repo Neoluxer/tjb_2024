@@ -4,35 +4,29 @@ from datetime import timedelta
 
 import pandas as pd
 
-
 default_contract = pd.DataFrame(columns=['area', 'compound', 'price', 'data'])
 
 
-def random_options():
-    list_options = ['фор-проект', 'проект с комплектацией', 'полный дизайн проект', 'планировка',
-                    'проект с авторским надзором']
-    #random.seed(11)
+def random_options(list_options):
     return random.choice(list_options)
 
 
-def options_generator(numbers):
+def options_generator(numbers, list_of_options):
     new_options_list = []
     for n in range(0, numbers):
-        new_options_list.append(random_options())
+        new_options_list.append(random_options(list_of_options))
     return new_options_list
 
 
-def area_generator(numbers):
+def area_generator(numbers, area_min, area_max):
     new_area_list = []
     for n in range(0, numbers):
-        #random.seed(11)
-        new_area_list.append(int(random.uniform(40, 200)))
+        new_area_list.append(int(random.uniform(area_min, area_max)))
     return new_area_list
 
 
 def get_random_date(start, end):
     delta = end - start
-    #random.seed(11)
     random_data = start + timedelta(random.randint(0, delta.days))
     return random_data
 
@@ -46,23 +40,22 @@ def data_list_generator(numbers, start, end):
     return data_list
 
 
-def contract_dataset_generator(numbers, start, end):
+def contract_dataset_generator(numbers, start, end, list_of_options, area_min, area_max):
     """
     @return Генерируются рандомные проекты в виде dataset
     """
     for items in range(numbers):
-        default_contract.loc[len(default_contract.index)] = [int(area_generator(numbers)[items]),
-                                                             options_generator(numbers)[items],
+        default_contract.loc[len(default_contract.index)] = [int(area_generator(numbers, area_min, area_max)[items]),
+                                                             options_generator(numbers, list_of_options)[items],
                                                              3500,
                                                              data_list_generator(numbers, start, end)[items].date()]
     return default_contract
 
 
 if __name__ == '__main__':
-    new_kit_2032 = (contract_dataset_generator(77, '01.01.2030', '29.12.2030'))
-    # https: // pandas.pydata.org / pandas - docs / stable / reference / api / pandas.DataFrame.drop.html
-    # create a Pandas Excel writer using XlsxWriter as the engine
-    # https: // www.geeksforgeeks.org / how - to - write - pandas - dataframes - to - multiple - excel - sheets /
-    with pd.ExcelWriter('XLSX/testdoc_2027.xlsx',mode="a", engine="openpyxl") as writer:
-        # Добавление в существующую страницу на другой лист
+    new_kit_2032 = (contract_dataset_generator(77, '01.01.2030', '29.12.2030', ['фор-проект', 'проект с комплектацией',
+                                                                                'полный дизайн проект', 'планировка',
+                                                                                'проект с авторским надзором'], 40,
+                                               200))
+    with pd.ExcelWriter('XLSX/testdoc_2027.xlsx', mode="a", engine="openpyxl") as writer:
         new_kit_2032.to_excel(writer, sheet_name="2032", index=False)

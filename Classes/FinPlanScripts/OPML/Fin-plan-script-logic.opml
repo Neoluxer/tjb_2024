@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+	<head>
+		<dateCreated>Sat Feb 10 2024 14:42:14 GMT+0300 (RTZ 2 (зима))</dateCreated>
+		<dateModified>Sat Feb 10 2024 14:42:14 GMT+0300 (RTZ 2 (зима))</dateModified>
+	</head>
+	<body>
+		<outline text="Fin-plan-script-logic">
+			<outline text="if __name__== '__main__':">
+				<outline text="data_set = make_finplan(2024)" _note="Генерирует фин-план">
+					<outline text="contract_dataset = customer_flow()" _note="Создает дата фрейм с заказами, исходя из рекламного бюджета,  записанного в константах">
+						<outline text="find_months_from_dict(calendar_dict_from_instance_list(contract_dataset), year, default_contract)" _note="Находит соответствующий месяц в таблице и передаёт в функцию&#10;    insert_profit_to_first_index(month, profit, default_contract)&#10;    и раскидывает доходы по месяцам в дата фрейме, возвращая заполненный&#10;    доходами фин.план">
+							<outline text="return">
+								<outline text="contract">
+									<outline text="dataframe"></outline>
+								</outline>
+							</outline>
+							<outline text="insert_profit_to_first_index(month, profit, contract)"></outline>
+						</outline>
+						<outline text="contract_dataset.to_excel('XLSX/dataset_2024.xlsx', sheet_name='examination')" _note="Записывает сформированный дата фрейм в файл"></outline>
+					</outline>
+					<outline text="data_set.to_excel('XLSX/fin_plan_2024_2.xlsx', sheet_name=f'2024_Norma_profit_{ProjectPrice.PROFIT_NORM_PER_M}')"></outline>
+					<outline text="return">
+						<outline text="monthly_expenses(default_contract, contract_dataset, year)" _note="Тут как раз формируется финансовый план: добавляются необходимые строки в таблицу">
+							<outline text="def monthly_expenses(contract, contract_dataset, year):">
+								<outline text="    add_sum_to_finplan(contract, profit_list)"></outline>
+								<outline text="    add_piggy_bank_to_fin_plan(contract)"></outline>
+								<outline text="    add_coast_full_project_to_fp(contract)"></outline>
+								<outline text="    add_counter_new_projects(contract, list_1, list_2, list_3, list_4, list_5, list_6,"></outline>
+								<outline text="    add_counter_of_fp(contract, contract_dataset)"></outline>
+								<outline text="    add_counter_of_dp(contract, contract_dataset)"></outline>
+								<outline text="    add_counter_of_dp_complectation(contract, contract_dataset)"></outline>
+								<outline text="    add_counter_of_dp_inspection(contract, contract_dataset)"></outline>
+								<outline text="    add_counter_of_plans(contract, contract_dataset)"></outline>
+								<outline text="    add_summ_of_projects(contract)"></outline>
+								<outline text="    add_summ_of_all_reserv(contract)"></outline>
+								<outline text="    add_summ_of_all_profit(contract)"></outline>
+								<outline text="    add_summ_of_all_ad(contract)"></outline>
+								<outline text="    add_summ_of_all_fot(contract)"></outline>
+								<outline text="    add_summ_of_all_bank_comission(contract)"></outline>
+								<outline text="    add_summ_of_all_director_wage(contract)"></outline>
+								<outline text="    add_summ_of_all_hosting(contract)"></outline>
+								<outline text="    add_summ_of_all_tax(contract)"></outline>
+								<outline text="    add_summ_of_all_buh(contract)"></outline>
+								<outline text="    add_summ_of_all_income(contract)"></outline>
+								<outline text="    add_potential_building_profit(contract, contract_dataset)"></outline>
+								<outline text="    add_constants(contract, counter_n_p)"></outline>
+								<outline text="    add_designers_and_draftsmens(contract, add_list_of_workers_to_fp(result))"></outline>
+							</outline>
+						</outline>
+					</outline>
+				</outline>
+			</outline>
+			<outline text="finplan_constants.py">
+				<outline text="CURRENT_YEAR = 2024  # Текущий год для рекламной кампании"></outline>
+				<outline text="ADV_JAN = 25_000  # Расход на рекламу в январе"></outline>
+				<outline text="ADV_FE = 50_000  # Расход на рекламу в феврале"></outline>
+				<outline text="ADV_MA = 50_000  # Расход на рекламу в марте34"></outline>
+				<outline text="ADV_AP = 75_000 # Расход на рекламу в апреле"></outline>
+				<outline text="ADV_MAY = 75_000  # Расход на рекламу в мае"></outline>
+				<outline text="ADV_JU = 75_000  # Расход на рекламу в июне"></outline>
+				<outline text="ADV_JUL = 75_000  # Расход на рекламу в июле"></outline>
+				<outline text="ADV_AU = 75_000  # Расход на рекламу в августе"></outline>
+				<outline text="ADV_SE = 75_000  # Расход на рекламу в сентябре"></outline>
+				<outline text="ADV_OC = 75_000  # Расход на рекламу в октябре"></outline>
+				<outline text="ADV_NO = 75_000  # Расход на рекламу в ноябре"></outline>
+				<outline text="ADV_DE = 75_000  # Расход на рекламу в декабре"></outline>
+				<outline text="COST_ONE_LID = 250  # Стоимость одного лида"></outline>
+				<outline text="CONVERSION_TO_CUSTOMER = 0.02  # Конверсия лида в покупателя"></outline>
+			</outline>
+			<outline text="contract_dataset_generator">
+				<outline text="def random_options()">
+					<outline text="['фор-проект', 'проект с комплектацией', 'полный дизайн проект', 'планировка', 'проект с авторским надзором']"></outline>
+				</outline>
+				<outline text="def area_generator(numbers):">
+					<outline text="new_area_list.append(int(random.uniform(40, 200)))"></outline>
+				</outline>
+			</outline>
+			<outline text="year"></outline>
+		</outline>
+		<outline text="XMind: ZEN - Trial Version"></outline>
+	</body>
+</opml>

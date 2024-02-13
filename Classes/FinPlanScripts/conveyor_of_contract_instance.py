@@ -112,13 +112,13 @@ def calendar_empty_dict(first_date, second_date):
     return dict(zip(list_of_dates, list_of_null_values))
 
 
-def calendar_dict_from_instance_list(dataset):
+def calendar_dict_from_instance_list(dataset,profit_month_norm,speed,wage_of_designer,wage_of_draftsmen):
     """
     Создает словарь с платежами из генератора заказов
     from_data_set_to_list_pp_instance
     """
     payments_dict = calendar_empty_dict(date(2024, 1, 1), date(2027, 1, 1))
-    all_instance = from_data_set_to_list_pp_instance(dataset)
+    all_instance = from_data_set_to_list_pp_instance(dataset,profit_month_norm,speed, wage_of_designer,wage_of_draftsmen)
 
     for items in all_instance:
         for values in items.full_project_payments_calendar().keys():
@@ -137,7 +137,7 @@ def calendar_dict_from_instance_list(dataset):
     return payments_dict
 
 
-def from_data_set_to_list_pp_instance(dt_set):
+def from_data_set_to_list_pp_instance(dt_set, profit_month_norm,speed,wage_of_designer,wage_of_draftsmen):
     """
     Создает список с экземплярами класса ProjectPrice из dataset contract_dataset_generator
     """
@@ -145,11 +145,16 @@ def from_data_set_to_list_pp_instance(dt_set):
     contracts = [ProjectPrice(square=int(dt_set.at[i, "area"]),
                               spaces=int(dt_set.iloc[i]["area"]) / finplan_constants.MIDDLE_ROOM,
                               typeof=1,
+                              wage_of_designer=wage_of_designer,
+                              wage_of_draftsmen=wage_of_draftsmen,
+                              time_of_one_vis=speed,
+                              profit_norm_perm=profit_month_norm,
                               date_start=dt_set.at[i, "data"],
                               content=content_modificator(dt_set, i),
                               designers=designers_calculator(int(dt_set.at[i, "area"])),
                               draftsmen=draftsmens_calculator(int(dt_set.at[i, "area"]))) for i in
                  range(len(dt_set))]
+    print(f'wage_of_designer {ProjectPrice.wage_of_designer}')
 
     return contracts
 
