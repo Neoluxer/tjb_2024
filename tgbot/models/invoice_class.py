@@ -103,8 +103,8 @@ class Invoice:
     def exel_generator(self):
         print("def exel_generator(self):")
         from openpyxl import load_workbook
-        wb = load_workbook(config.EXEL_PATH + 'example2.xlsx')
-        wb_filename = f'{config.EXEL_PATH}invoice_{self.prefix}_{self.number_akt}.xlsx'
+        wb = load_workbook(config.EXEL_PATH2 + 'example2.xlsx')
+        wb_filename = f'{config.EXEL_PATH2}invoice_{self.prefix}_{self.number_akt}.xlsx'
         ws = wb["Заготовка счета"]
         ws['U22'] = self.quantity  # Количество
         ws['D22'] = self.name_of_services  # Товар
@@ -123,8 +123,8 @@ class Invoice:
     def exel_generator_akt(self):
         print("def exel_generator_akt(self):")
         from openpyxl import load_workbook
-        wb = load_workbook(config.EXEL_PATH + 'example2.xlsx')
-        wb_filename_akt = f'{config.EXEL_PATH}akt_{self.prefix}_{self.number_akt}.xlsx'
+        wb = load_workbook(config.EXEL_PATH2 + 'example2.xlsx')
+        wb_filename_akt = f'{config.EXEL_PATH2}akt_{self.prefix}_{self.number_akt}.xlsx'
         ws = wb["Заготовка акта"]
         ws['U11'] = self.quantity  # Количество
         ws['D11'] = self.name_of_services  # Товар

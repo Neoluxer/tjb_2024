@@ -3,7 +3,7 @@ import datetime
 from aiogram import Dispatcher
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from tgbot.data.config import EXEL_PATH
+from tgbot.data.config import EXEL_PATH, EXEL_PATH2
 from tgbot.keyboards.menu import organisations_menu, units_menu
 from tgbot.misc.invoice_states import Test
 from tgbot.models.commands import add_invoice
@@ -14,11 +14,13 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 
 async def enter_test(message: types.Message, state: FSMContext):
-    if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.full_name == 'Olga Zavada':
+    if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.id == 1015129409:
         await message.answer("Вы начали формирование Счета.\n"
                              "Введите Покупателя: ")
         await Test.first()
     else:
+        await message.answer("Вы начали формирование Счета.\n"
+                             "Введите Покупателя: ")
         await Test.first()
 
 
@@ -116,6 +118,8 @@ async def answer_q6(message: types.Message, state: FSMContext):
 
     await message.answer("Счет и Акт сформирован!")
     summa = int(answer5) * int(answer4)
+
+
     # Путь и название файла для формирования акта:
     wb_filename_akt = f'{EXEL_PATH}akt_{summa}_{number_1}.xlsx'
     # Путь и название файла для формирования счета:
@@ -138,10 +142,14 @@ async def answer_q6(message: types.Message, state: FSMContext):
                       published=datetime.date.today(),
                       sum=summa,
                       invoice_number=name_of_invoice,
-                      invoice_file=wb_filename_akt,
-                      invoice_file_invoice=wb_filename_invoice,
+                      invoice_file=f'{EXEL_PATH}akt_{summa}_{number_1}.xlsx',
+                      invoice_file_invoice=f'{EXEL_PATH}invoice_{summa}_{number_1}.xlsx',
                       )
     print(f'name_of_invoice = {new_akt.name_of_invoice}')
+    with open(f'{EXEL_PATH2}invoice_{summa}_{number_1}.xlsx', 'rb') as docx_file:  # Открывает и отправляет в бот
+        await message.answer_document(docx_file)
+    await message.answer('<a href="http://127.0.0.1:8000/admin/invoice/invoice/">admin panel</a>',
+                         parse_mode="HTML")
     await state.finish()  # Сбрасывается состояние и сбрасываются данные
 
 
