@@ -92,8 +92,8 @@ WSGI_APPLICATION = 'dj_ac.wsgi.application'
 POSTGRES_DB = os.environ.get('POSTGRES_DB')
 POSTGRES_USER = os.environ.get('POSTGRES_USER')
 POSTGRES_PASS = os.environ.get('POSTGRES_PASSWORD')
-POSTGRES_HOST = "db"
-#POSTGRES_HOST = "localhost"
+#POSTGRES_HOST = "db"
+POSTGRES_HOST = "localhost"
 POSTGRES_PORT = 5432
 
 DATABASES = {
@@ -150,3 +150,4 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+

@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.markdown import hcode
 from tgbot.data import config
 from datetime import datetime
+from aiogram.utils.markdown import hlink
 
 DATE = '%d.%m.%Y %H:%M:%S'
 Log_path = config.LOG_PATH
@@ -15,6 +16,7 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 async def bot_echo(message: types.Message):
     await message.answer(result)
+    await message.reply('<a href="http://127.0.0.1:8000/media/files/logs.txt">Log</a>',parse_mode="HTML")
     textutf = (message.text)
     adding_string = str(datetime.utcnow().strftime(DATE)) + ":" + str(message.from_user.id) + ": " + textutf + "\n"
     with open(Log_path, 'a') as f:

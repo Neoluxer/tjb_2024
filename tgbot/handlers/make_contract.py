@@ -14,22 +14,16 @@ from tgbot.models.commands import add_private_contract
 from tgbot.models.commands import add_private_person
 from tgbot.models.contract_class import Contract
 
-try:
-    number_of_last_invoice = PrivateContract.objects.latest('id')
-except:
-    number_of_last_invoice = 0
-
-
-
-root_path = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\media\\files'
+root_path = 'media/files'
 
 
 async def to_pdf(new_dogovor, message):
-    print(int(number_of_last_invoice.id))
-    file = f'{new_dogovor.path}contract_{int(number_of_last_invoice.id)}_{new_dogovor.pefix}.html'
-    output = f'{new_dogovor.path}contract_{int(number_of_last_invoice.id)}_{new_dogovor.pefix}.pdf'
-    output2 = f'{root_path}contract_{int(number_of_last_invoice.id)}_{new_dogovor.pefix}.pdf'
-    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    number_of_last_invoice = PrivateContract.objects.latest('id')
+    dogovor_number = int(number_of_last_invoice.id) + 1
+    file = f'{new_dogovor.path}contract_{dogovor_number}_{new_dogovor.pefix}.html'
+    output = f'{new_dogovor.path}contract_{dogovor_number}_{new_dogovor.pefix}.pdf'
+    output2 = f'{root_path}contract_{dogovor_number}_{new_dogovor.pefix}.pdf'
+    path_wkhtmltopdf = 'media/wkhtmltopdf/bin/wkhtmltoimage.exe'
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     pdfkit.from_file(file, output, configuration=config)
     pdfkit.from_file(file, output2, configuration=config)  # Запись в джанго папку
@@ -44,15 +38,22 @@ async def cmd_reset(message: types.Message, state: FSMContext):
 
 
 async def run_default_contract(message: types.Message):
-    if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.full_name == 'Olga Zavada':
-        await message.answer("Вы начали формирование Договора.\n"
+    if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.id == 1015129409:
+        await message.answer("Добрый день, Администратор. ID:  \n" + str(message.from_user.id) + " " +
                              "Введите Покупателя (Иванов Иван Иванович): ")
         await Contract2.first()
     else:
+        await message.answer("Вы начали формирование Договора.\n"
+                             "Введите Покупателя (Иванов Иван Иванович): ")
         await Contract2.first()
 
 
 async def answer_q1(message: types.Message, state: FSMContext):
+    number_of_last_invoice = PrivateContract.objects.latest('id')
+    dogovor_number = number_of_last_invoice.id
+    await message.answer("Номер текущего договора  " + str(dogovor_number))
+    await message.answer("PrivateContract.objects.latest id  " + str(PrivateContract.objects.latest('id')))
+
     answer = message.text
     good_fio_check = answer.split()
     if (len(good_fio_check)) == 3:
@@ -174,9 +175,12 @@ async def result(message: types.Message, state: FSMContext):
         answer11 = data.get("answer11")  # 1500
         prefix = 999
     try:
-        contract_id = int(number_of_last_invoice.id) + 1
+        number_of_last_invoice = PrivateContract.objects.latest('id')
+        dogovor_number = int(number_of_last_invoice.id) + 1
+        contract_id = dogovor_number
     except:
         contract_id = 1
+
     new_dogovor = await Contract(customername=answer1,
                                  quantity=int(answer2),
                                  price=int(answer11),
@@ -195,7 +199,7 @@ async def result(message: types.Message, state: FSMContext):
     try:
         nowd = datetime.datetime.now()
         # todo И СДЕЛАТЬ ЗАПИСЬ ЗАКАЗЧИКА СО ВСЕМИ РЕКВИЗИТАМИ В БАЗУ ДАННЫХ!
-        new_contract_number = (int(number_of_last_invoice.id)) + 1
+        new_contract_number = contract_id
         await add_private_contract(customername=str(answer1),
                                    quantity=int(answer2),
                                    price=int(answer2),
@@ -223,17 +227,25 @@ async def result(message: types.Message, state: FSMContext):
     except Exception as e:
         await message.answer(str(e))
         await message.answer("Не получается записать покупателя в базу данных")
-    doc = new_dogovor.text
-    new_dogovor.to_word()
+    doc = new_dogovor.text  # Создает договор
+    new_dogovor.to_word()  # Записывает в файл ->
+    #  doc.save(f"{config.CONTRACT_PATH}contract_{self.number}_{self.pefix}.docx")
+    #  media/files/XLS/contract_20_999.docx
 
-    html_file = open(f'{config.CONTRACT_PATH}contract_{new_dogovor.number}_{prefix}.html',
+    html_file = open(f'{config.CONTRACT_PATH}contract_{contract_id}_{prefix}.html',
                      'w', encoding='utf-8')
-    doc_path = (f'{config.CONTRACT_PATH}contract_{new_dogovor.number}_{prefix}.docx')
-    html_file.write(doc)
+    #  media/files/XLS/contract_20_999.html
+
+    doc_path = (f'{config.CONTRACT_PATH}contract_{contract_id}_{prefix}.docx')
+    #  media/files/XLS/contract_20_999.docx
+
+    html_file.write(doc)  # Записывает файл
     html_file.close()
     print(f'doc_path {doc_path}')
-    with open(doc_path, 'rb') as docx_file:
+    with open(doc_path, 'rb') as docx_file:  # Открывает и отправляет в бот
         await message.answer_document(docx_file)
+    await state.reset_data()
+    await state.finish()
 
 
 def register_add_default_contract(dp: Dispatcher):

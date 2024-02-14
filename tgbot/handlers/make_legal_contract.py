@@ -29,6 +29,9 @@ async def start_making_contract(message: types.Message, state: FSMContext):
         await state.reset_state(with_data=True)
         await state.set_state(Contract_legal.Q1)
     else:
+        await message.answer("Вы начали формирование Договора на полный проект.\n"
+                             "с юридическим лицом\n"
+                             "Введите площадь: ")
         await state.set_state(Contract_legal.Q1)
 
 
@@ -345,7 +348,8 @@ async def answer_q20(message: types.Message, state: FSMContext):  # цена
             bank_ks=answer19)
 
         doc = new_dogovor.text_legal_entity
-        new_dogovor.path = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\tgbot\\HTML\\'
+        new_dogovor.path = 'media/files/XLS/'
+        #new_dogovor.path = 'files/XLS/'
         new_dogovor.to_word_legal()
         with open(f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx', 'rb') as g:
             await message.answer_document(g)  # Тут происходит отсылка документа пользователь.
@@ -354,15 +358,17 @@ async def answer_q20(message: types.Message, state: FSMContext):  # цена
             Html_file.write(doc)
             Html_file.close()
         file = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.html'
-        output = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.pdf'
-        root_path = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\media\\files'
-        output2 = f'{root_path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.pdf'
-        path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+        output = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
+        root_path = 'media/files/XLS/'
+        root_path_2 = 'files/XLS/'
+        output2 = f'{root_path_2}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
+        #  media/files/XLS/contract_legal_22_2023.pdf
+        path_wkhtmltopdf = 'media/wkhtmltopdf/bin/wkhtmltopdf.exe'
         config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
         pdfkit.from_file(file, output, configuration=config)
-        pdfkit.from_file(file, output2, configuration=config)  # Запись в джанго папку
-        with open(output, 'rb') as pdf_file:
-            await message.answer_document(pdf_file)
+
+        # with open(output, 'rb') as pdf_file:
+        #     await message.answer_document(pdf_file)
         await add_contract(customername=answer9,
                            quantity=int(answer),
                            price=int(message.text),
@@ -383,7 +389,7 @@ async def answer_q20(message: types.Message, state: FSMContext):  # цена
                            bank_name=answer17,
                            bank_bik=answer18,
                            bank_ks=answer19,
-                           contract_file=output)
+                           contract_file=f'{root_path_2}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx')
         await state.reset_state(with_data=True)
     except Exception as e:
         await message.reply("Не смог создать экземпляр класса" + str(e))

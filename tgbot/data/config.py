@@ -1,10 +1,10 @@
-CONTRACT_PATH = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\tgbot\\HTML\\'
-CONTRACT_PATH2 = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\media\\files\\XLS\\'
-RELATIVE_PATH = '../tgbot/HTML/'
-LOG_PATH = r'C:\Users\User\PycharmProjects\tjb_2024\media\files\logs.txt'
-PICTURE_PATH = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\media\\files\\PICTURES\\'
-EXEL_PATH = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\media\\files\\XLS\\'
-STAMP = r'C:\Users\User\PycharmProjects\tjb_2024\media\files\PICTURES\stamp_neoluxe.png'
-AUTOGRAPH = r'C:\Users\User\PycharmProjects\tjb_2024\media\files\PICTURES\autograph.png'
-AUTOGRAPH2 = r'C:\Users\User\PycharmProjects\tjb_2024\media\files\PICTURES\autograph2.png'
-LOGO = r'C:\Users\User\PycharmProjects\tjb_2024\media\files\PICTURES\logo.png'
+CONTRACT_PATH = 'media/files/XLS/' # По этому пути записывается файл
+CONTRACT_PATH2 = 'files/XLS/' # Сюда не записывает,
+# но этот путь нужен для того, чтобы в админке формировался правильный путь
+LOG_PATH = 'media/files/logs.txt'
+PICTURE_PATH = 'media/files/PICTURES/'
+EXEL_PATH = 'media/files/XLS/'
+STAMP = 'media/files/PICTURES/stamp_neoluxe.png'
+AUTOGRAPH = r'media/files/PICTURES/autograph.png'
+AUTOGRAPH2 = 'media/files/PICTURES/autograph2.png'
+LOGO = 'media/files/PICTURES/logo.png'

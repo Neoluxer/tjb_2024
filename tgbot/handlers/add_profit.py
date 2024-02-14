@@ -68,11 +68,8 @@ async def answer_q4(message: types.Message, state: FSMContext):
 
         try:
 
-            await message.answer("answer = " + str(answer))  # Источник дохода
-            await message.answer("answer3 = " + str(answer3))  # Категория платежа
-            await message.answer("answer2 = " + str(answer2))  # Сумма дохода
-            await message.answer("answer4 = " + str(answer4))  # Имя
-            await message.answer("income_id = " + str(income_id))  # ID категории платежа
+            await message.answer('<a href="http://127.0.0.1:8000/admin/addprofit/addprofits/">admin panel</a>',parse_mode="HTML")  # Источник дохода
+
             await add_profit(customer = str(answer4), price = float(answer2), description = str(answer),
                              category = int(1))
             await state.finish()

@@ -42,7 +42,7 @@ class Contract:
                f'   Основание: {self.name_of_services}\n'
 
     def __init__(self,
-                 path: str = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\tgbot\\HTML\\',
+                 path: str = 'tgbot/HTML/',
                  prefix: int = 443,
                  customername: str = 'Иванов Иван Иванович',
                  customer_firm: str = 'ООО СУ «Астон» ',
@@ -849,7 +849,8 @@ class Contract:
                    }
         doc.render(context)
         doc.save(f"{config.CONTRACT_PATH}contract_{self.number}_{self.pefix}.docx")
-        doc.save(f"{config.CONTRACT_PATH2}contract_{self.number}_{self.pefix}.docx")
+        doc.save(f"{self.path}contract_{self.number}_{self.pefix}.docx")
+        #doc.save(f"{config.CONTRACT_PATH2}contract_{self.number}_{self.pefix}.docx")
 
     def to_word_measurements_contract(self):
         print("* def to_word_measurements_contract")
@@ -936,6 +937,7 @@ class Contract:
             file_path = f"{self.path}contract_legal_{self.number}_{self.pefix}.docx"
             print (f"{self.path}contract_legal_{self.number}_{self.pefix}.docx")
             doc.save(f"{self.path}contract_legal_{self.number}_{self.pefix}.docx")
+
 
             result = os.path.exists(file_path)
             print (f'Файл записался : {result}')

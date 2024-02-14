@@ -73,7 +73,7 @@ def add_private_person(
     except Exception as e:
 
         nowd = datetime.datetime.now()
-        whenissued_error =f'{nowd.year}-{nowd.month}-{nowd.day}'
+        whenissued_error = f'{nowd.year}-{nowd.month}-{nowd.day}'
         new_person = Private_person(customername=customername,
                                     mail=mail,
                                     passportnumber=passportnumber,
@@ -165,16 +165,8 @@ def add_contract(customername, quantity, price, adressofobject, mail, total_cost
 
 
 @sync_to_async()
-def add_private_contract(customername,
-                         quantity=10,
-                         price=200,
-                         address_of_object="Краснодар",
-                         town_object="Краснодар",
-                         private_contract_file="C:\\Users\\User\\PycharmProjects\\tjb_2024\\tgbot\\HTML\\contract_553_999.docx",
-                         source="Дизайн проект",
-                         square=200,
-                         published="2023-12-14",
-                         ):
+def add_private_contract(customername, quantity, price, address_of_object, town_object, private_contract_file, source,
+                         square, published, ):
     try:
         new_customer = Customer_category(name=customername)
         new_customer.save()
@@ -184,6 +176,8 @@ def add_private_contract(customername,
         new_customer = Customer_category.objects.get(name=customername)
         print("Добавляем")
     print("* add_private_contract")
+
+
     try:
         print("try (new_contract = ContractBase()")
         new_contract = PrivateContract(customername=new_customer,
@@ -194,7 +188,8 @@ def add_private_contract(customername,
                                        private_contract_file=private_contract_file,
                                        source=source,
                                        square=square,
-                                       published=published)
+                                       published=published,
+                                       )
         print("-----------------------------------------------------------------------------------")
         print(f'private_contract_file=private_contract_file  {new_contract.private_contract_file}')
         print("-----------------------------------------------------------------------------------")
