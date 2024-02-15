@@ -883,7 +883,7 @@ class Contract:
                    }
         doc.render(context)
         doc.save(f"{config.CONTRACT_PATH}contract_{self.number}_{self.pefix}.docx")
-        doc.save(f"{config.CONTRACT_PATH2}contract_{self.number}_{self.pefix}.docx")
+        doc.save(f"{self.path}contract_{self.number}_{self.pefix}.docx")
 
     def to_word_legal(self):
         print("* def to_word_legal\n ")

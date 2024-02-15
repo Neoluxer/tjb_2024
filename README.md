@@ -15,6 +15,9 @@ docker-compose up -d
 # остановить контейнер:
 docker-compose down
 # если в код были внесены изменения, необходимо заново смонтировать контейнер
+
+docker-compose down; docker-compose build; docker-compose up -d
+
 ```
 ## Переключение из локальной отладочной версии к Докер версии
 - Поменять настройки в файлах .env и settings.py

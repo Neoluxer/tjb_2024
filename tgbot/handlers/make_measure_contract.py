@@ -18,10 +18,7 @@ try:
 except:
     number_of_last_invoice = 0
 
-
-
-
-root_path = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\media\\files'
+root_path = 'media/files'
 
 
 async def to_pdf(new_dogovor, message):
@@ -30,7 +27,7 @@ async def to_pdf(new_dogovor, message):
     output = f'{new_dogovor.path}contract_{new_dogovor.number}_{new_dogovor.pefix}.pdf'
     root_path = 'C:\\Users\\User\\PycharmProjects\\tjb_2024\\media\\files'
     output2 = f'{root_path}contract_{new_dogovor.number}_{new_dogovor.pefix}.pdf'
-    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    path_wkhtmltopdf = 'media/wkhtmltopdf/bin/wkhtmltoimage.exe'
     configuration = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     pdfkit.from_file(file, output, configuration=configuration)
     pdfkit.from_file(file, output2, configuration=configuration)  # Запись в джанго папку
@@ -39,11 +36,13 @@ async def to_pdf(new_dogovor, message):
 
 
 async def run_measure_contract(message: types.Message):
-    if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.full_name == 'Olga Zavada':
+    if message.from_user.full_name == 'Vladimir Kandalov' or message.from_user.id == 1015129409:
         await message.answer("Вы начали формирование Договора (Обмеры).\n"
                              "Введите Покупателя (Иванов Иван Иванович): ")
         await Measure.first()
     else:
+        await message.answer("Вы начали формирование Договора.\n"
+                             "Введите Покупателя (Петров Иван Михайлович): ")
         await Measure.first()
 
 

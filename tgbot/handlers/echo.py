@@ -16,10 +16,11 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 async def bot_echo(message: types.Message):
     await message.answer(result)
-    await message.reply('<a href="http://127.0.0.1:8000/media/files/logs.txt">Log</a>',parse_mode="HTML")
-    textutf = (message.text)
-    adding_string = str(datetime.utcnow().strftime(DATE)) + ":" + str(message.from_user.id) + ": " + textutf + "\n"
-    with open(Log_path, 'a') as f:
+    await message.reply('<a href="http://192.168.31.150:8000/media/files/logs.txt">Log</a>',parse_mode="HTML")
+    await message.reply('<a href="http://localhost:8000/media/files/logs.txt">Log_2</a>', parse_mode="HTML")
+    textutf = str(message.text)
+    adding_string = str(str(datetime.utcnow().strftime(DATE)) + ":" + str(message.from_user.id) + ": " + textutf + "\n")
+    with open(Log_path, 'a', encoding='cp1251') as f:
         f.write(adding_string)
 
 

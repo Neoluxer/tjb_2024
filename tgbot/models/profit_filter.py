@@ -75,7 +75,10 @@ def average_profit():
 
     gs = all_profits()
     numbers = counting_months()
-    return int(gs / numbers)
+    if numbers>0:
+        return int(gs / numbers)
+    else:
+        return int(gs/1)
 
 
 # 30,417
@@ -111,7 +114,11 @@ def get_sum_is_customer(customer):
 def get_sum_is_customer_name(cname):
     def customer_name(cname):
         customers = Customer_category.objects.filter(name__exact=cname)
-        return customers.values().first()['id']
+        if customers:
+            return customers.values().first()['id']
+        else:
+            print("No profit in customers.values().first()['id']")
+            return 0
 
     cust_id = customer_name(cname)
 
