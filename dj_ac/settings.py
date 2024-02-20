@@ -38,20 +38,19 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(',')
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'commercial_offer',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.postgres',
-
     'app_telegram.apps.AppTelegramConfig',
     'addprofit.apps.AddprofitConfig',
     'lids.apps.LidsConfig',
     'invoice.apps.InvoiceConfig',
     'customer.apps.CustomerConfig',
-    'addproject.apps.AddprojectConfig',
     'make_contract_base.apps.MakeContractConfig',
     'constants.apps.ConstantsConfig',
+
 
 ]
 

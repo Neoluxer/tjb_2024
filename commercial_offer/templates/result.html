@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Offer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-fluid" style="padding: 30px">
+    <div class="container">
+        <div class="row">
+            <div class="col align-self-start">
+                <div class="logo"><a href="http://localhost:8000"><img
+                        src="https://www.neoluxe.ru/bitrix/templates/2015_assets/img/logo.png"></a></div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <p style="font-size:12px">ООО «Неолюкс» 350010, г. Краснодар, ул. Зиповская, д. 5 Литера Х, офис 28, телефон:
+        +7(978) 074-08-54, Сайт: www.neoluxe.ru </p>
+    <hr>
+    <h1 data-heading="Коммерческое предложение № {{ kp_number }} от {{ data_now }} от ООО Неолюкс">Коммерческое предложение № {{ kp_number }} от
+        {{ data_now }}</h1>
+    <table>
+        <tr>
+            <td>Адрес: <strong>{{ town }}, {{ usertext }}</strong></td>
+        </tr>
+        <tr>
+            <td>Заказчик: <strong>{{ customer_name }}</strong></td>
+        </tr>
+        <tr>
+            <td>Площадь: <strong>{{ area }}</strong> кв.м</td>
+        </tr>
+
+
+    </table>
+    <hr>
+    <h3 data-heading="***{{ first_title }}***"><strong><em>{{ aditional_title_1 }} {{ first_title }}</em></strong></h3>
+
+    <ol>
+        {% for athlete in first_list_of_service %}
+            <li>{{ athlete }}</li>
+        {% endfor %}
+    </ol>
+    <p>{{ price_1n }} <strong>{{ price_1 }} {{ rubles_m_1 }}</strong></p>
+    <p>{{ coast1 }} <strong>{{ cost_1 }} {{ rubles_1 }}</strong></p>
+    <h3 data-heading="***{{ second_title }}***"><strong><em>{{ aditional_title_2 }} {{ second_title }}</em></strong></h3>
+    <ol>
+        {% for athlete in second_list_of_service %}
+            <li>{{ athlete }}</li>
+        {% endfor %}
+    </ol>
+    <p>{{ price_2n }} <strong>{{ price_2 }} {{ rubles_m_2 }}</strong></p>
+    <p>{{ coast2 }} <strong>{{ cost_2 }} {{ rubles_2 }}</strong></p>
+    <h3 data-heading="***{{ third_title }}***"><strong><em>{{ aditional_title_3 }} {{ third_title }}</em></strong></h3>
+    <ol>
+        {% for athlete in third_list_of_service %}
+            <li>{{ athlete }}</li>
+        {% endfor %}
+    </ol>
+    <p>{{ price_3n }} <strong>{{ price_3 }} {{ rubles_m_3 }}</strong></p>
+    <p>{{ coast3 }} <strong>{{ cost_3 }} {{ rubles_3 }}</strong></p>
+    <br><br>
+
+    <h5>Срок выполнения работ <strong>{{ time_3 }} *рабочих дней</strong> рабочих дней (Без учета времени на
+        согласование
+        с
+        заказчиком)*</h5>
+    <h5 data-heading="Скидка -10%: {{ discount }} рублей">Скидка -10%: {{ discount }} рублей</h5>
+    <h5 data-heading="Итоговая стоимость: {{ cost_minus_discount }} рублей">Итоговая
+        стоимость: {{ cost_minus_discount }} рублей</h5></div>
+
+</body>
+</html>

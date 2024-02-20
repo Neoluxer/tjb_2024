@@ -8,8 +8,8 @@ from .models import*
 class AddProfit_admin(admin.ModelAdmin):
     list_display = ('id', 'customer', 'price', 'description', 'published')
     list_display_links = ('customer', 'price')
-    search_fields = ('id', 'price', 'description', 'published')
+    search_fields = ('id', 'price', 'description', 'published', 'published')
 
 
-admin.site.register(AddProfits,AddProfit_admin)
+admin.site.register(AddProfits, AddProfit_admin)
 admin.site.register(Customer_category)
