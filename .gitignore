@@ -36,7 +36,7 @@ pip-delete-this-directory.txt
 *.pot
 
 
-pyenv
+#pyenv
 .python-version
 
 pipenv
@@ -51,7 +51,7 @@ __pypackages__/
 
 # Environments
 .venv
-env/
+#env/
 venv/
 ENV/
 env.bak/
@@ -60,7 +60,7 @@ venv.bak/
 # Pyre type checker
 .pyre/
 .idea/*
-.env
+#.env
 .DS_Store
 
 # Database

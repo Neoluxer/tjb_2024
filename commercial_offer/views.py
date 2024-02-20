@@ -13,8 +13,11 @@ def offer(request):
 
 
 def result(request):
-    last_id = Offer.objects.latest('id')
-    kp_number = int(last_id.id) + 1
+    try:
+        last_id = Offer.objects.latest('id')
+        kp_number = int(last_id.id) + 1
+    except:
+        kp_number =1
     user_text = request.GET['usertext']
     town = request.GET['town']
     pro_ject = request.GET['project']
