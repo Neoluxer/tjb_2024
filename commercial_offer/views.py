@@ -1,5 +1,6 @@
 import copy
 from datetime import datetime
+
 from django.shortcuts import render
 
 from Classes.CalcClasses import ProjectPrice
@@ -16,7 +17,7 @@ def result(request):
         last_id = Offer.objects.latest('id')
         kp_number = int(last_id.id) + 1
     except:
-        kp_number =1
+        kp_number = 1
     user_text = request.GET['usertext']
     town = request.GET['town']
     pro_ject = request.GET['project']
@@ -31,29 +32,29 @@ def result(request):
     rooms = request.GET['rooms']
     checkbox = request.GET['inlineRadioOptions']
     data_now = f'{datetime.now().day}.{datetime.now().month}.{datetime.now().year}'
-    shema_vis_list=['обмеры',
-               'электрика',
-               'планировка',
-               'кладочный план',
-               'демонтаж',
-               'план ТП',
-               'развертки',
-               'ведомость',
-               'план пола',
-               'план потолка',
-               'мебельные конструкции',
-               'схематичная визуализация',
-               'обложка',
-               'электрика освещение',
-               'электрика розетки',
-               'узлы потолка',
-               'примечание',
-               'ведомость электроустановки',
-               'ведомость дверей',
-               'схема разверток стен',
-               'cхема сан.тех.приборов'
+    shema_vis_list = ['обмеры',
+                      'электрика',
+                      'планировка',
+                      'кладочный план',
+                      'демонтаж',
+                      'план ТП',
+                      'развертки',
+                      'ведомость',
+                      'план пола',
+                      'план потолка',
+                      'мебельные конструкции',
+                      'схематичная визуализация',
+                      'обложка',
+                      'электрика освещение',
+                      'электрика розетки',
+                      'узлы потолка',
+                      'примечание',
+                      'ведомость электроустановки',
+                      'ведомость дверей',
+                      'схема разверток стен',
+                      'cхема сан.тех.приборов'
 
-    ]
+                      ]
     dp_list = ['обмеры',
                'электрика',
                'планировка',
@@ -77,27 +78,28 @@ def result(request):
                'cхема сан.тех.приборов'
                ]
     dp_list_c = ['обмеры',
-               'электрика',
-               'планировка',
-               'кладочный план',
-               'демонтаж',
-               'план ТП',
-               'развертки',
-               'ведомость',
-               'план пола',
-               'план потолка',
-               'мебельные конструкции',
-               'визуализация',
-               'обложка',
-               'электрика освещение',
-               'электрика розетки',
-               'узлы потолка',
-               'примечание',
-               'ведомость электроустановки',
-               'ведомость дверей',
-               'схема разверток стен',
-               'cхема сан.тех.приборов'
-               ]
+                 'электрика',
+                 'планировка',
+                 'кладочный план',
+                 'демонтаж',
+                 'план ТП',
+                 'развертки',
+                 'ведомость',
+                 'план пола',
+                 'план потолка',
+                 'мебельные конструкции',
+                 'визуализация',
+                 'обложка',
+                 'электрика освещение',
+                 'электрика розетки',
+                 'узлы потолка',
+                 'примечание',
+                 'ведомость электроустановки',
+                 'ведомость дверей',
+                 'схема разверток стен',
+                 'cхема сан.тех.приборов',
+                 'комплектация'
+                 ]
 
     def make_project_list(form_data):
         p_choice = []
@@ -210,7 +212,6 @@ def result(request):
                                draftsmen=int(draftsmens),
                                profit_norm_perm=int(profitnorm))
 
-
     newInterior_2 = ProjectPrice(square=int(area), spaces=int(rooms), typeof=1,
                                  content=second_list[0],
                                  designers=int(designers),
@@ -230,13 +231,12 @@ def result(request):
     second_list_1 = make_project_list(pro_ject_2)[0]
     third_list_1 = make_project_list(pro_ject_3)[0]
 
-
-    price_1 = round(newInterior.calculate_price_per_meter(),0)
-    price_2 = round(newInterior_2.calculate_price_per_meter(),0)
-    price_3 = round(newInterior_3.calculate_price_per_meter(),0)
-    time_1 = newInterior.time_of_visualization() + newInterior.time_of_blueprints()+2
-    time_2 = newInterior_2.time_of_visualization() + newInterior_2.time_of_blueprints()+2
-    time_3 = newInterior_3.time_of_visualization() + newInterior_3.time_of_blueprints()+2
+    price_1 = round(newInterior.calculate_price_per_meter(), 0)
+    price_2 = round(newInterior_2.calculate_price_per_meter(), 0)
+    price_3 = round(newInterior_3.calculate_price_per_meter(), 0)
+    time_1 = newInterior.time_of_visualization() + newInterior.time_of_blueprints() + 2
+    time_2 = newInterior_2.time_of_visualization() + newInterior_2.time_of_blueprints() + 2
+    time_3 = newInterior_3.time_of_visualization() + newInterior_3.time_of_blueprints() + 2
     cost_1 = int(price_1) * int(newInterior.square)
     cost_2 = int(price_2) * int(newInterior_2.square)
     cost_3 = int(price_3) * int(newInterior_3.square)
@@ -294,7 +294,7 @@ def result(request):
                                                'price_1': price_1,
                                                'price_2': price_2,
                                                'price_3': price_3,
-                                               'time_text_1':time_text_1,
+                                               'time_text_1': time_text_1,
                                                'time_text_2': time_text_2,
                                                'time_text_3': time_text_3,
                                                'time_1': time_1,
