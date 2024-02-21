@@ -180,11 +180,9 @@ class ProjectPrice:
         """
         @return: Расчет времени на визуализацию
         """
-        print(self.content[0])
         # Округляем в большую сторону:
 
-        if self.content[0] == 'фор-проект':
-            print("!!!!!!!!!!!!!!!!!!")
+        if self.content == 'фор-проект':
             self.time_of_vis = 1
         elif "визуализация" in self.content:
             self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
@@ -427,7 +425,7 @@ class ProjectPrice:
 
 
 if __name__ == '__main__':
-    newInterior = ProjectPrice(square=100, spaces=15, typeof=1, content=fp_list,
+    newInterior = ProjectPrice(square=100, spaces=15, typeof=1, content=['полный дизайн проект'],
                                designers=2,
                                draftsmen=2)
 
