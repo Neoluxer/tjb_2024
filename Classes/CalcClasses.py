@@ -207,17 +207,23 @@ class ProjectPrice:
         """
         @return: Расчет времени на чертежи исходя из количества листов
         """
-        if self.content == ['проект с комплектацией'] or self.content == [
-            'проект с авторским надзором'] or self.content == [
-            'проект со схематичной визуализацией'] or self.content == ['полный дизайн проект']:
-            self.timeOfBlueprint = math.ceil(
-                (self.sheets + self.spaces + self.SHEETS) / self.draftsmen)  # Округляем в большую сторону
+        if self.content:
+            try:
+                if self.content == ['проект с комплектацией'] or self.content == [
+                    'проект с авторским надзором'] or self.content == [
+                    'проект со схематичной визуализацией'] or self.content == ['полный дизайн проект']:
+                    self.timeOfBlueprint = math.ceil(
+                        (self.sheets + self.spaces + self.SHEETS) / self.draftsmen)  # Округляем в большую сторону
 
+                else:
+                    if 'развертки' not in self.content:
+                        self.timeOfBlueprint = len(self.content) + 1
+                    else:
+                        self.timeOfBlueprint = len(self.content) - 1 + self.spaces
+            except:
+                return 0
         else:
-            if 'развертки' not in self.content:
-                self.timeOfBlueprint = len(self.content) + 1
-            else:
-                self.timeOfBlueprint = len(self.content) - 1 + self.spaces
+            return 0
 
         return self.timeOfBlueprint
 
