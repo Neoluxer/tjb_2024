@@ -31,7 +31,29 @@ def result(request):
     rooms = request.GET['rooms']
     checkbox = request.GET['inlineRadioOptions']
     data_now = f'{datetime.now().day}.{datetime.now().month}.{datetime.now().year}'
+    shema_vis_list=['обмеры',
+               'электрика',
+               'планировка',
+               'кладочный план',
+               'демонтаж',
+               'план ТП',
+               'развертки',
+               'ведомость',
+               'план пола',
+               'план потолка',
+               'мебельные конструкции',
+               'схематичная визуализация',
+               'обложка',
+               'электрика освещение',
+               'электрика розетки',
+               'узлы потолка',
+               'примечание',
+               'ведомость электроустановки',
+               'ведомость дверей',
+               'схема разверток стен',
+               'cхема сан.тех.приборов'
 
+    ]
     dp_list = ['обмеры',
                'электрика',
                'планировка',
@@ -154,10 +176,7 @@ def result(request):
             p_choice = new_list.append("авторский надзор")
             title = "Проект с авторским надзором"
         elif form_data == "29":
-            p_choice.clear()
-            new_list = copy.deepcopy(dp_list)
-            new_list.remove("визуализация")
-            p_choice = new_list.append("схематичная визуализация")
+            p_choice = shema_vis_list
             title = "Проект со схематичной визуализацией"
         return p_choice, title
 
