@@ -194,9 +194,9 @@ def result(request):
     price_1 = round(newInterior.calculate_price_per_meter(),0)
     price_2 = round(newInterior_2.calculate_price_per_meter(),0)
     price_3 = round(newInterior_3.calculate_price_per_meter(),0)
-    time_1 = newInterior.time_of_visualization() + newInterior.time_of_blueprints()+7
-    time_2 = newInterior_2.time_of_visualization() + newInterior.time_of_blueprints()+7
-    time_3 = newInterior_3.time_of_visualization() + newInterior.time_of_blueprints()+7
+    time_1 = newInterior.time_of_visualization() + newInterior.time_of_blueprints()+2
+    time_2 = newInterior_2.time_of_visualization() + newInterior_2.time_of_blueprints()+2
+    time_3 = newInterior_3.time_of_visualization() + newInterior_3.time_of_blueprints()+2
     cost_1 = int(price_1) * int(newInterior.square)
     cost_2 = int(price_2) * int(newInterior_2.square)
     cost_3 = int(price_3) * int(newInterior_3.square)
