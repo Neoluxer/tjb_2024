@@ -206,7 +206,7 @@ def result(request):
             p_choice.append('комплектация')
             title = "комплектация"
         elif form_data == "25":
-            p_choice = dp_list_a
+            p_choice.append('комплектация')
             title = "Авторский надзор"
         elif form_data == "26":
             p_choice = dp_list_c
@@ -215,9 +215,7 @@ def result(request):
             p_choice = dp_list
             title = "Полный дизайн проект"
         elif form_data == "28":
-            p_choice.clear()
-            new_list = copy.deepcopy(dp_list)
-            p_choice = new_list.append("авторский надзор")
+            p_choice = dp_list_a
             title = "Проект с авторским надзором"
         elif form_data == "29":
             p_choice = shema_vis_list
