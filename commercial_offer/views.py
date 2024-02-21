@@ -1,6 +1,5 @@
 import copy
 from datetime import datetime
-import math
 from django.shortcuts import render
 
 from Classes.CalcClasses import ProjectPrice
@@ -185,9 +184,9 @@ def result(request):
     second_list_1 = make_project_list(pro_ject_2)[0]
     third_list_1 = make_project_list(pro_ject_3)[0]
 
-    price_1 = round(newInterior.calculate_price_per_meter(),0)
-    price_2 = round(newInterior_2.calculate_price_per_meter(),0)
-    price_3 = round(newInterior_3.calculate_price_per_meter(),0)
+    price_1 = round(newInterior.overhead(),0)
+    price_2 = round(newInterior_2.overhead(),0)
+    price_3 = round(newInterior_3.overhead(),0)
     time_1 = newInterior.time_of_visualization() + newInterior.time_of_blueprints()
     time_2 = newInterior_2.time_of_visualization() + newInterior.time_of_blueprints()
     time_3 = newInterior_3.time_of_visualization() + newInterior.time_of_blueprints()

@@ -27,6 +27,32 @@ dp_list = ['обмеры',
            'cхема сан.тех.приборов'
            ]
 
+dp_c_list = ['обмеры',
+           'электрика',
+           'планировка',
+           'кладочный план',
+           'демонтаж',
+           'план ТП',
+           'развертки',
+           'ведомость',
+           'план пола',
+           'план потолка',
+           'мебельные конструкции',
+           'визуализация',
+           'обложка',
+           'электрика освещение',
+           'электрика розетки',
+           'узлы потолка',
+           'примечание',
+           'ведомость электроустановки',
+           'ведомость дверей',
+           'схема разверток стен',
+           'cхема сан.тех.приборов',
+            'комплектация',
+
+           ]
+
+
 
 class ProjectPrice:
     time_periods_dict = {"pre_design_work": 17}  # Время на предпроектную работу
@@ -80,7 +106,7 @@ class ProjectPrice:
 
     # Прочие константы
     SHEETS = 10  # Количество неизменных листов в проекте. Коэффициент сложности относится к ним
-    PROFIT_NORM_PER_M = 150_000  # Норма прибыли в месяц
+    PROFIT_NORM_PER_M = 350_000  # Норма прибыли в месяц
 
     OVERHEAD_PER_M = 13_939 + 341  # Накладные расходы без УСН налога (6%) и без Аренды офиса
     wage_of_designer = 1000  # Гонорар дизайнера за квадрат
@@ -117,29 +143,32 @@ class ProjectPrice:
         # случаев без УСН налога (6%) и без Аренды офиса
         self.wageOfDesigner = wage_of_designer  # Гонорар дизайнера за квадрат
         self.wageOfDraftsmen = wage_of_draftsmen  # Гонорар чертёжника за квадрат
-        self.base_price = profit_norm_perm/15
+        self.base_price = 3500
 
     def calculate_price_per_meter(self):
         """Подсчитывает цену за м.кв."""
+        fot = (self.square * (self.wageOfDesigner + self.wageOfDraftsmen))
+        time_of_making_project = self.time_of_visualization() + self.time_of_blueprints() + 10 / 30  # Время в месяцах на проект
+        target_profit = self.profitNormPerM * time_of_making_project  # Например 300_000
+        all_fot = fot * time_of_making_project * self.project_parts()
         if self.project_parts() >= 1:
-            fot = (self.square * (self.wageOfDesigner + self.wageOfDraftsmen))
-            time_of_making_project = self.time_of_visualization() + self.time_of_blueprints() + 10 / 30  # Время в месяцах на проект
-            target_profit = self.profitNormPerM * time_of_making_project  # Например 300_000
-            all_fot = fot * time_of_making_project * self.project_parts()
-            result_coast = (target_profit + all_fot) / self.square
+            if 'комплектация' in self.content:
+                result_coast = (target_profit/(time_of_making_project) + all_fot/time_of_making_project-self.additional_complectation_profit()/time_of_making_project) / self.square
+            else:
+                result_coast = (target_profit/(time_of_making_project) + all_fot/time_of_making_project) / self.square
 
         else:
             if 50<=self.square<=300:
                 result_coast = self.base_price * self.project_parts()
             elif 1000>=self.square>300:
-                result_coast = self.base_price * self.project_parts()*0.8
+                result_coast = self.base_price * self.project_parts()*1
             elif self.square<50:
-                result_coast = self.base_price * self.project_parts() * 2
+                result_coast = self.base_price * self.project_parts() * 1
             else :
-                result_coast = self.base_price * self.project_parts()*0.5
+                result_coast = self.base_price * self.project_parts()*1
 
 
-        return result_coast
+        return result_coast*1.5
 
     def time_of_visualization(self):
         """
@@ -376,7 +405,7 @@ class ProjectPrice:
 
 
 if __name__ == '__main__':
-    newInterior = ProjectPrice(square=100, spaces=10, typeof=1, content=['планировка','электрика розетки'],
+    newInterior = ProjectPrice(square=300, spaces=10, typeof=1, content=dp_c_list,
                                designers=4,
                                draftsmen=2)
 

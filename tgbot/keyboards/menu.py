@@ -127,6 +127,7 @@ start_menu = ReplyKeyboardMarkup(
             KeyboardButton(text="/add_lid"),
             KeyboardButton(text="/add_profit"),
             KeyboardButton(text="/cancel"),
+            KeyboardButton(text="/offer"),
 
         ],
 

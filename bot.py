@@ -17,6 +17,7 @@ from tgbot.handlers.price import register_price
 from tgbot.handlers.make_contract import register_add_default_contract
 from tgbot.handlers.make_measure_contract import register_add_measure_contract
 from tgbot.handlers.make_legal_contract import register_add_legal_contract
+from tgbot.handlers.offer import register_add_offer
 from tgbot.middlewares.environment import EnvironmentMiddleware
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,7 @@ def register_all_filters(dp):
 
 def register_all_handlers(dp):
     register_add_legal_contract(dp)
+    register_add_offer(dp)
     register_add_default_contract(dp)
     register_add_measure_contract(dp)
     register_count_profit(dp)
