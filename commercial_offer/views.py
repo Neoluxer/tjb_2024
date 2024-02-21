@@ -134,24 +134,20 @@ def result(request):
             p_choice.append('авторский надзор')
             title = "Авторский надзор"
         elif form_data == "26":
-            old_list = copy.deepcopy(p_choice)
-            p_choice = old_list + dp_list
-            p_choice.append('комплектация')
+            p_choice.clear()
+            p_choice = ['проект с комплектацией']
             title = "Проект с комплектацией"
         elif form_data == "27":
             old_list_2 = copy.deepcopy(p_choice)
             p_choice = old_list_2 + dp_list
             title = "Полный дизайн проект"
         elif form_data == "28":
-            old_list_3 = copy.deepcopy(p_choice)
-            p_choice = old_list_3 + dp_list
-            p_choice.append('авторский надзор')
+            p_choice.clear()
+            p_choice=['проект с авторским надзором']
             title = "Проект с авторским надзором"
         elif form_data == "29":
-            old_list_4 = copy.deepcopy(p_choice)
-            p_choice = old_list_4 + dp_list
-            p_choice.append('схематичная визуализация')
-            p_choice.remove('визуализация')
+            p_choice.clear()
+            p_choice=['проект со схематичной визуализацией']
             title = "Проект со схематичной визуализацией"
         return p_choice, title
 

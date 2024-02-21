@@ -28,30 +28,29 @@ dp_list = ['обмеры',
            ]
 
 dp_c_list = ['обмеры',
-           'электрика',
-           'планировка',
-           'кладочный план',
-           'демонтаж',
-           'план ТП',
-           'развертки',
-           'ведомость',
-           'план пола',
-           'план потолка',
-           'мебельные конструкции',
-           'визуализация',
-           'обложка',
-           'электрика освещение',
-           'электрика розетки',
-           'узлы потолка',
-           'примечание',
-           'ведомость электроустановки',
-           'ведомость дверей',
-           'схема разверток стен',
-           'cхема сан.тех.приборов',
-            'комплектация',
+             'электрика',
+             'планировка',
+             'кладочный план',
+             'демонтаж',
+             'план ТП',
+             'развертки',
+             'ведомость',
+             'план пола',
+             'план потолка',
+             'мебельные конструкции',
+             'визуализация',
+             'обложка',
+             'электрика освещение',
+             'электрика розетки',
+             'узлы потолка',
+             'примечание',
+             'ведомость электроустановки',
+             'ведомость дверей',
+             'схема разверток стен',
+             'cхема сан.тех.приборов',
+             'комплектация',
 
-           ]
-
+             ]
 
 
 class ProjectPrice:
@@ -119,7 +118,8 @@ class ProjectPrice:
     FULL_PROJECT_PAYMENTS = [0.085, 0.32, 0.415, 0.18]  # Платежи по полному дизайн проекту в процентном соотношении
 
     def __init__(self, square, spaces, typeof: int, content: list, designers=DESIGNERS, draftsmen=DRAFTSMENS,
-                 profit_norm_perm: int = PROFIT_NORM_PER_M, wage_of_designer: int = WAGE_OF_DESIGNER, wage_of_draftsmen: int = WAGE_OF_DRAFTSMEN,
+                 profit_norm_perm: int = PROFIT_NORM_PER_M, wage_of_designer: int = WAGE_OF_DESIGNER,
+                 wage_of_draftsmen: int = WAGE_OF_DRAFTSMEN,
                  time_of_one_vis: int = 1, time_of_vis: int = 1, time_of_blueprint: int = 1, overh: int = None,
                  date_start: datetime = '2025-01-19'):
         """
@@ -143,17 +143,19 @@ class ProjectPrice:
         # случаев без УСН налога (6%) и без Аренды офиса
         self.wageOfDesigner = wage_of_designer  # Гонорар дизайнера за квадрат
         self.wageOfDraftsmen = wage_of_draftsmen  # Гонорар чертёжника за квадрат
-        self.base_price = 3500
+        self.base_price = 4000
 
     def calculate_price_per_meter(self):
         """Подсчитывает цену за м.кв."""
-        fot = (self.square * (self.wageOfDesigner + self.wageOfDraftsmen+self.WAGE_OF_DRAFTSMEN_FP))
-        time_of_making_project = (self.time_of_visualization() + self.time_of_blueprints() + 10) / 30  # Время в месяцах на проект
+
+        fot = (self.square * (self.wageOfDesigner + self.wageOfDraftsmen + self.WAGE_OF_DRAFTSMEN_FP))
+        time_of_making_project = (
+                                             self.time_of_visualization() + self.time_of_blueprints() + 10) / 30  # Время в месяцах на проект
         target_profit = self.profitNormPerM * time_of_making_project  # Например 300_000
         all_fot = fot * self.project_parts()
-        target_coast = target_profit+all_fot
-        result = target_coast/(self.square*time_of_making_project)
-        self.designers = self.square/self.NORM_AREA_FOR_DESIGNER
+        target_coast = target_profit + all_fot
+        result = (target_coast / (self.square * time_of_making_project)) * self.project_parts()
+        self.designers = self.square / self.NORM_AREA_FOR_DESIGNER
         # print(f'Площадь: {self.square}')
         # print(f'Фонд оплаты труда: {fot} за полный проект')
         # print(f'Время в месяцах на проект: {time_of_making_project}')
@@ -161,6 +163,8 @@ class ProjectPrice:
         # print(f'target profit за всё время выполнения проекта = {target_profit}')
         # print(f'target cost: {target_coast}')
         # print(f'result = {result}')
+        if len(self.content) < 10 or self.content == ['фор-проект']:
+            result = self.base_price * self.project_parts()
         return result
 
     def time_of_visualization(self):
@@ -171,7 +175,7 @@ class ProjectPrice:
         if "визуализация" in self.content:
             self.time_of_vis = math.ceil(
                 (self.spaces * self.number_of_visualizations_per_day) * self.time_of_one_vis / self.designers)
-            #print("визуализация в составе проекта")
+            # print("визуализация в составе проекта")
         else:
             self.time_of_vis = 0
 
@@ -332,8 +336,12 @@ class ProjectPrice:
                  'cхема сан.тех.приборов': 0.00135,
                  'комплектация': 0.3,
                  'авторский надзор': 0.5,
-                 'схематичная визуализация': 0.3,
+                 'схематичная визуализация': 1 - 0.3,
                  'полный дизайн проект': 1,
+                 'проект со схематичной визуализацией': 1 - 0.3,
+                 'проект с авторским надзором': 1.5,
+                 'проект с комплектацией': 1.3,
+
                  }
         summa = 0
         try:
@@ -398,7 +406,7 @@ class ProjectPrice:
 
 
 if __name__ == '__main__':
-    newInterior = ProjectPrice(square=250, spaces=10, typeof=1, content=dp_c_list,
+    newInterior = ProjectPrice(square=250, spaces=10, typeof=1, content=['проект с комплектацией'],
                                designers=12,
                                draftsmen=2)
 
@@ -409,7 +417,7 @@ if __name__ == '__main__':
 
     print(f'Время на визуализацию: {t}\nВремя на чертежи: {r}\nОбщее время: {t + r}\nЦена за м.кв.: {o}\n'
           f'Часть проекта: {p}')
-    newInterior.calculate_price_per_meter()
+    print(newInterior.calculate_price_per_meter())
 
     # print()
     # print(f'Сегодня дата: {now_date.date()}')
