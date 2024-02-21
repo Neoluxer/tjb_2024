@@ -171,10 +171,21 @@ class ProjectPrice:
         """
         @return: Расчет времени на визуализацию
         """
+        print(self.content[0])
         # Округляем в большую сторону:
-        if "визуализация" in self.content or "полный дизайн проект" in self.content or "проект с комплектацией"in self.content or "проект с авторским надзором":
+
+        if self.content[0] =='фор-проект':
+            print("!!!!!!!!!!!!!!!!!!")
+            self.time_of_vis = 0
+        elif "визуализация" in self.content:
             self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
-            # print("визуализация в составе проекта")
+        elif "полный дизайн проект" in self.content:
+            self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
+        elif "проект с авторским надзором" in self.content:
+            self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
+        elif "проект с комплектацией" in self.content:
+            self.time_of_vis = ((self.spaces * self.time_of_one_vis) / self.designers)+self.spaces
+
         else:
             self.time_of_vis = 0
 
@@ -322,7 +333,7 @@ class ProjectPrice:
                  'план потолка': 0.030647,
                  'мебельные конструкции': 0.022701,
                  'визуализация': 0.615778,
-                 'фор-проект': 0.141884,
+                 'фор-проект': 0.3, # 0.141884
                  'альбом планировочных решений': 0.085131,
                  'обложка': 0.001135,
                  'электрика освещение': 0.015323,
@@ -335,9 +346,9 @@ class ProjectPrice:
                  'cхема сан.тех.приборов': 0.00135,
                  'комплектация': 0.3,
                  'авторский надзор': 0.5,
-                 'схематичная визуализация': 1 - 0.1,
+                 'схематичная визуализация': 1 - 0.5,
                  'полный дизайн проект': 1,
-                 'проект со схематичной визуализацией': 1 - 0.1,
+                 'проект со схематичной визуализацией': 1 - 0.5,
                  'проект с авторским надзором': 1.5,
                  'проект с комплектацией': 1.3,
 
@@ -405,18 +416,17 @@ class ProjectPrice:
 
 
 if __name__ == '__main__':
-    newInterior = ProjectPrice(square=250, spaces=15, typeof=1, content=['полный дизайн проект'],
+    newInterior = ProjectPrice(square=100, spaces=15, typeof=1, content=['полный дизайн проект'],
                                designers=2,
                                draftsmen=2)
 
     t = newInterior.time_of_visualization()
     r = newInterior.time_of_blueprints()
-    o = newInterior.overhead()
+    o = newInterior.calculate_price_per_meter()
     p = newInterior.project_parts()
 
     print(f'Время на визуализацию: {t}\nВремя на чертежи: {r}\nОбщее время: {t + r}\nЦена за м.кв.: {o}\n'
           f'Часть проекта: {p}')
-    print(newInterior.calculate_price_per_meter())
 
     # print()
     # print(f'Сегодня дата: {now_date.date()}')

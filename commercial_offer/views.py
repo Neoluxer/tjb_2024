@@ -142,19 +142,22 @@ def result(request):
             title = "Авторский надзор"
         elif form_data == "26":
             p_choice.clear()
-            p_choice = ['проект с комплектацией']
+            new_list = copy.deepcopy(dp_list)
+            p_choice = new_list.append("комплектация")
             title = "Проект с комплектацией"
         elif form_data == "27":
-            old_list_2 = copy.deepcopy(p_choice)
-            p_choice = old_list_2 + dp_list
+            p_choice = dp_list
             title = "Полный дизайн проект"
         elif form_data == "28":
             p_choice.clear()
-            p_choice=['проект с авторским надзором']
+            new_list = copy.deepcopy(dp_list)
+            p_choice = new_list.append("авторский надзор")
             title = "Проект с авторским надзором"
         elif form_data == "29":
             p_choice.clear()
-            p_choice=['проект со схематичной визуализацией']
+            new_list = copy.deepcopy(dp_list)
+            new_list.remove("визуализация")
+            p_choice = new_list.append("схематичная визуализация")
             title = "Проект со схематичной визуализацией"
         return p_choice, title
 
@@ -187,55 +190,6 @@ def result(request):
     second_list_1 = make_project_list(pro_ject_2)[0]
     third_list_1 = make_project_list(pro_ject_3)[0]
 
-    if first_list_1 == ["проект со схематичной визуализацией"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        new_list.remove("визуализация")
-        first_list_1 = new_list.append("схематичная визуализация")
-
-    if second_list_1 == ["проект со схематичной визуализацией"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        new_list.remove("визуализация")
-        second_list_1 = new_list.append("схематичная визуализация")
-
-    if third_list_1 == ["проект со схематичной визуализацией"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        new_list.remove("визуализация")
-        third_list_1 = new_list.append("схематичная визуализация")
-
-
-    if first_list_1 == ["проект с авторским надзором"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        first_list_1 = new_list.append("авторский надзор")
-
-    if second_list_1 == ["проект с авторским надзором"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        second_list_1 = new_list.append("авторский надзор")
-
-    if third_list_1 == ["проект с авторским надзором"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        third_list_1 = new_list.append("авторский надзор")
-
-
-    if first_list_1 == ["проект с комплектацией"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        first_list_1 = new_list.append("комплектация")
-
-    if second_list_1 == ["проект с комплектацией"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        second_list_1 = new_list.append("комплектация")
-
-    if third_list_1 == ["проект с комплектацией"]:
-        first_list_1.clear()
-        new_list = copy.deepcopy(dp_list)
-        third_list_1 = new_list.append("комплектация")
 
     price_1 = round(newInterior.calculate_price_per_meter(),0)
     price_2 = round(newInterior_2.calculate_price_per_meter(),0)
