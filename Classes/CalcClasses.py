@@ -172,9 +172,15 @@ class ProjectPrice:
         # print(f'target profit за всё время выполнения проекта = {target_profit}')
         # print(f'target cost: {target_coast}')
         # print(f'result = {result}')
-        if len(self.content) < 10 or self.content == ['фор-проект']:
-            result = self.base_price * self.project_parts()
-        return result
+        if self.content:
+            try:
+                if len(self.content) <= 10 or self.content == ['фор-проект']:
+                    result = self.base_price * self.project_parts()
+                return result
+            except:
+                return 0
+        else:
+            return 0
 
     def time_of_visualization(self):
         """
