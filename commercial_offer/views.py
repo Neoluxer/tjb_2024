@@ -171,6 +171,7 @@ def result(request):
                                draftsmen=int(draftsmens),
                                profit_norm_perm=int(profitnorm))
 
+
     newInterior_2 = ProjectPrice(square=int(area), spaces=int(rooms), typeof=1,
                                  content=second_list[0],
                                  designers=int(designers),

@@ -181,20 +181,25 @@ class ProjectPrice:
         @return: Расчет времени на визуализацию
         """
         # Округляем в большую сторону:
+        if self.content:
+            try:
+                if self.content == 'фор-проект':
+                    self.time_of_vis = 1
+                elif "визуализация" in self.content:
+                    self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
+                elif "полный дизайн проект" in self.content:
+                    self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
+                elif "проект с авторским надзором" in self.content:
+                    self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
+                elif "проект с комплектацией" in self.content:
+                    self.time_of_vis = ((self.spaces * self.time_of_one_vis) / self.designers) + self.spaces
 
-        if self.content == 'фор-проект':
-            self.time_of_vis = 1
-        elif "визуализация" in self.content:
-            self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
-        elif "полный дизайн проект" in self.content:
-            self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
-        elif "проект с авторским надзором" in self.content:
-            self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
-        elif "проект с комплектацией" in self.content:
-            self.time_of_vis = ((self.spaces * self.time_of_one_vis) / self.designers) + self.spaces
-
+                else:
+                    self.time_of_vis = 1
+            except:
+                return 0
         else:
-            self.time_of_vis = 1
+            return 0
 
         return self.time_of_vis
 
@@ -425,7 +430,7 @@ class ProjectPrice:
 
 
 if __name__ == '__main__':
-    newInterior = ProjectPrice(square=100, spaces=15, typeof=1, content=['полный дизайн проект'],
+    newInterior = ProjectPrice(square=100, spaces=15, typeof=1, content=[''],
                                designers=2,
                                draftsmen=2)
 
