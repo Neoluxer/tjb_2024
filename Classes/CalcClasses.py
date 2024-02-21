@@ -120,7 +120,7 @@ class ProjectPrice:
     def __init__(self, square, spaces, typeof: int, content: list, designers=DESIGNERS, draftsmen=DRAFTSMENS,
                  profit_norm_perm: int = PROFIT_NORM_PER_M, wage_of_designer: int = WAGE_OF_DESIGNER,
                  wage_of_draftsmen: int = WAGE_OF_DRAFTSMEN,
-                 time_of_one_vis: int = 1, time_of_vis: int = 1, time_of_blueprint: int = 1, overh: int = None,
+                 time_of_one_vis: int = 3, time_of_vis: int = 1, time_of_blueprint: int = 1, overh: int = None,
                  date_start: datetime = '2025-01-19'):
         """
         @type time_of_vis: int
@@ -172,9 +172,8 @@ class ProjectPrice:
         @return: Расчет времени на визуализацию
         """
         # Округляем в большую сторону:
-        if "визуализация" in self.content:
-            self.time_of_vis = math.ceil(
-                (self.spaces * self.number_of_visualizations_per_day) * self.time_of_one_vis / self.designers)
+        if "визуализация" in self.content or "полный дизайн проект" in self.content or "проект с комплектацией"in self.content or "проект с авторским надзором":
+            self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
             # print("визуализация в составе проекта")
         else:
             self.time_of_vis = 0
@@ -185,13 +184,13 @@ class ProjectPrice:
         """
         @return: Расчет времени на чертежи исходя из количества листов
         """
-        if "электрика" and "обмеры" and "планировка" and "кладочный план" and "демонтаж" and "развертки" and "план пола" and "план потолка" and "электрика освещение" in self.content:
+        if "электрика" and "обмеры" and "планировка" and "кладочный план" and "демонтаж" and "развертки" and "план пола" and "план потолка" and "электрика освещение" in self.content or self.content == ['проект с комплектацией']or self.content == ['проект с авторским надзором']or self.content == ['проект со схематичной визуализацией']or self.content == ['полный дизайн проект']:
             self.timeOfBlueprint = math.ceil(
-                (self.sheets + self.spaces) / self.draftsmen)  # Округляем в большую сторону
+                (self.sheets + self.spaces + self.SHEETS) / self.draftsmen)  # Округляем в большую сторону
 
         else:
             if 'развертки' not in self.content:
-                self.timeOfBlueprint = len(self.content)
+                self.timeOfBlueprint = len(self.content)+6
             else:
                 self.timeOfBlueprint = len(self.content) - 1 + self.spaces
 
@@ -406,8 +405,8 @@ class ProjectPrice:
 
 
 if __name__ == '__main__':
-    newInterior = ProjectPrice(square=250, spaces=10, typeof=1, content=['проект с комплектацией'],
-                               designers=12,
+    newInterior = ProjectPrice(square=250, spaces=15, typeof=1, content=['полный дизайн проект'],
+                               designers=2,
                                draftsmen=2)
 
     t = newInterior.time_of_visualization()
