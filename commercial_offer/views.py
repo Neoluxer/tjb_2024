@@ -95,7 +95,14 @@ def result(request):
             p_choice.append('визуализация')
             title = ""
         elif form_data == "13":
-            p_choice.append('фор-проект')
+            p_choice.clear()
+            p_choice.append('обмеры')
+            p_choice.append('план пола')
+            p_choice.append('кладочный план')
+            p_choice.append('электрика')
+            p_choice.append('демонтаж')
+            p_choice.append('планировка')
+            p_choice.append('план тёплого пола')
             title = "фор-проект"
         elif form_data == "14":
             p_choice.append('альбом планировочных решений')
@@ -180,6 +187,56 @@ def result(request):
     second_list_1 = make_project_list(pro_ject_2)[0]
     third_list_1 = make_project_list(pro_ject_3)[0]
 
+    if first_list_1 == ["проект со схематичной визуализацией"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        new_list.remove("визуализация")
+        first_list_1 = new_list.append("схематичная визуализация")
+
+    if second_list_1 == ["проект со схематичной визуализацией"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        new_list.remove("визуализация")
+        second_list_1 = new_list.append("схематичная визуализация")
+
+    if third_list_1 == ["проект со схематичной визуализацией"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        new_list.remove("визуализация")
+        third_list_1 = new_list.append("схематичная визуализация")
+
+
+    if first_list_1 == ["проект с авторским надзором"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        first_list_1 = new_list.append("авторский надзор")
+
+    if second_list_1 == ["проект с авторским надзором"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        second_list_1 = new_list.append("авторский надзор")
+
+    if third_list_1 == ["проект с авторским надзором"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        third_list_1 = new_list.append("авторский надзор")
+
+
+    if first_list_1 == ["проект с комплектацией"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        first_list_1 = new_list.append("комплектация")
+
+    if second_list_1 == ["проект с комплектацией"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        second_list_1 = new_list.append("комплектация")
+
+    if third_list_1 == ["проект с комплектацией"]:
+        first_list_1.clear()
+        new_list = copy.deepcopy(dp_list)
+        third_list_1 = new_list.append("комплектация")
+
     price_1 = round(newInterior.calculate_price_per_meter(),0)
     price_2 = round(newInterior_2.calculate_price_per_meter(),0)
     price_3 = round(newInterior_3.calculate_price_per_meter(),0)
@@ -207,6 +264,9 @@ def result(request):
     coast1 = "Стоимость: "
     coast2 = "Стоимость: "
     coast3 = "Стоимость: "
+    time_text_1 = "Срок выполнения работ в рабочих днях без учета времени на согласование с заказчиком: "
+    time_text_2 = "Срок выполнения работ в рабочих днях без учета времени на согласование с заказчиком: "
+    time_text_3 = "Срок выполнения работ в рабочих днях без учета времени на согласование с заказчиком: "
     title_for_bd = f"{user_text}_{customer_name}_{cost_1}"
 
     # todo Проверить вручную, правильно ли считает калькулятор стоимости. Когда заводишь много дизайнеров, то цена становится меньше.
@@ -240,6 +300,9 @@ def result(request):
                                                'price_1': price_1,
                                                'price_2': price_2,
                                                'price_3': price_3,
+                                               'time_text_1':time_text_1,
+                                               'time_text_2': time_text_2,
+                                               'time_text_3': time_text_3,
                                                'time_1': time_1,
                                                'time_2': time_2,
                                                'time_3': time_3,
@@ -298,6 +361,9 @@ def result(request):
                                                'time_1': time_1,
                                                'time_2': " ",
                                                'time_3': " ",
+                                               'time_text_1': time_text_1,
+                                               'time_text_2': " ",
+                                               'time_text_3': " ",
                                                'cost_3': " ",
                                                'cost_2': " ",
                                                'cost_1': cost_1,
