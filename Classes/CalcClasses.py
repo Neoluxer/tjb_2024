@@ -185,7 +185,7 @@ class ProjectPrice:
 
         if self.content[0] == 'фор-проект':
             print("!!!!!!!!!!!!!!!!!!")
-            self.time_of_vis = 0
+            self.time_of_vis = 1
         elif "визуализация" in self.content:
             self.time_of_vis = (self.spaces * self.time_of_one_vis) / self.designers
         elif "полный дизайн проект" in self.content:
@@ -196,7 +196,7 @@ class ProjectPrice:
             self.time_of_vis = ((self.spaces * self.time_of_one_vis) / self.designers) + self.spaces
 
         else:
-            self.time_of_vis = 0
+            self.time_of_vis = 1
 
         return self.time_of_vis
 
