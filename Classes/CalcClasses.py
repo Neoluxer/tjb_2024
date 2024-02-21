@@ -66,7 +66,7 @@ class ProjectPrice:
     DIRECTOR_SALARY = 100_000  # Константа зарплата директора в месяц
     SUPPLIER_SALARY = 60_000  # Константа зарплата комплектатора в месяц
     WAGE_OF_DESIGNER = 1000  # Константа дизайнеру за квадратный метр
-    WAGE_OF_DRAFTSMEN = 1000  # Константа чертёжнику за квадратный метр Альбома чертежей
+    WAGE_OF_DRAFTSMEN = 500  # Константа чертёжнику за квадратный метр Альбома чертежей
     WAGE_OF_DRAFTSMEN_FP = 200  # Константа чертёжнику за квадратный метр Фор-Проекта
     WAGE_OF_DRAFTSMEN_P = 150  # Константа чертёжнику за квадратный метр Планировки
 
@@ -106,7 +106,7 @@ class ProjectPrice:
 
     # Прочие константы
     SHEETS = 10  # Количество неизменных листов в проекте. Коэффициент сложности относится к ним
-    PROFIT_NORM_PER_M = 350_000  # Норма прибыли в месяц
+    PROFIT_NORM_PER_M = 200_000  # Норма прибыли в месяц
 
     OVERHEAD_PER_M = 13_939 + 341  # Накладные расходы без УСН налога (6%) и без Аренды офиса
     wage_of_designer = 1000  # Гонорар дизайнера за квадрат
@@ -119,7 +119,7 @@ class ProjectPrice:
     FULL_PROJECT_PAYMENTS = [0.085, 0.32, 0.415, 0.18]  # Платежи по полному дизайн проекту в процентном соотношении
 
     def __init__(self, square, spaces, typeof: int, content: list, designers=DESIGNERS, draftsmen=DRAFTSMENS,
-                 profit_norm_perm: int = PROFIT_NORM_PER_M, wage_of_designer: int = 0, wage_of_draftsmen: int = 0,
+                 profit_norm_perm: int = PROFIT_NORM_PER_M, wage_of_designer: int = WAGE_OF_DESIGNER, wage_of_draftsmen: int = WAGE_OF_DRAFTSMEN,
                  time_of_one_vis: int = 1, time_of_vis: int = 1, time_of_blueprint: int = 1, overh: int = None,
                  date_start: datetime = '2025-01-19'):
         """
@@ -147,28 +147,21 @@ class ProjectPrice:
 
     def calculate_price_per_meter(self):
         """Подсчитывает цену за м.кв."""
-        fot = (self.square * (self.wageOfDesigner + self.wageOfDraftsmen))
-        time_of_making_project = self.time_of_visualization() + self.time_of_blueprints() + 10 / 30  # Время в месяцах на проект
+        fot = (self.square * (self.wageOfDesigner + self.wageOfDraftsmen+self.WAGE_OF_DRAFTSMEN_FP))
+        time_of_making_project = (self.time_of_visualization() + self.time_of_blueprints() + 10) / 30  # Время в месяцах на проект
         target_profit = self.profitNormPerM * time_of_making_project  # Например 300_000
-        all_fot = fot * time_of_making_project * self.project_parts()
-        if self.project_parts() >= 1:
-            if 'комплектация' in self.content:
-                result_coast = (target_profit/(time_of_making_project) + all_fot/time_of_making_project-self.additional_complectation_profit()/time_of_making_project) / self.square
-            else:
-                result_coast = (target_profit/(time_of_making_project) + all_fot/time_of_making_project) / self.square
-
-        else:
-            if 50<=self.square<=300:
-                result_coast = self.base_price * self.project_parts()
-            elif 1000>=self.square>300:
-                result_coast = self.base_price * self.project_parts()*1
-            elif self.square<50:
-                result_coast = self.base_price * self.project_parts() * 1
-            else :
-                result_coast = self.base_price * self.project_parts()*1
-
-
-        return result_coast*1.5
+        all_fot = fot * self.project_parts()
+        target_coast = target_profit+all_fot
+        result = target_coast/(self.square*time_of_making_project)
+        self.designers = self.square/self.NORM_AREA_FOR_DESIGNER
+        # print(f'Площадь: {self.square}')
+        # print(f'Фонд оплаты труда: {fot} за полный проект')
+        # print(f'Время в месяцах на проект: {time_of_making_project}')
+        # print (f'Отдаем исполнителям {all_fot} из {self.square*3500}')
+        # print(f'target profit за всё время выполнения проекта = {target_profit}')
+        # print(f'target cost: {target_coast}')
+        # print(f'result = {result}')
+        return result
 
     def time_of_visualization(self):
         """
@@ -178,7 +171,7 @@ class ProjectPrice:
         if "визуализация" in self.content:
             self.time_of_vis = math.ceil(
                 (self.spaces * self.number_of_visualizations_per_day) * self.time_of_one_vis / self.designers)
-            print("визуализация в составе проекта")
+            #print("визуализация в составе проекта")
         else:
             self.time_of_vis = 0
 
@@ -405,8 +398,8 @@ class ProjectPrice:
 
 
 if __name__ == '__main__':
-    newInterior = ProjectPrice(square=300, spaces=10, typeof=1, content=dp_c_list,
-                               designers=4,
+    newInterior = ProjectPrice(square=250, spaces=10, typeof=1, content=dp_c_list,
+                               designers=12,
                                draftsmen=2)
 
     t = newInterior.time_of_visualization()
@@ -416,19 +409,20 @@ if __name__ == '__main__':
 
     print(f'Время на визуализацию: {t}\nВремя на чертежи: {r}\nОбщее время: {t + r}\nЦена за м.кв.: {o}\n'
           f'Часть проекта: {p}')
+    newInterior.calculate_price_per_meter()
 
-    print()
-    print(f'Сегодня дата: {now_date.date()}')
-    print(f'Дата первого платежа: {newInterior.date_start}')
-    print(f'Дата второго платежа: {newInterior.full_project_calendar_second_pay().date()}')
-    print(f'Дата третьего платежа: {newInterior.full_project_calendar_third_pay().date()}')
-    print(f'Дата последнего платежа: {newInterior.full_project_calendar_final_pay().date()}')
-    print(f'Общее время на проект: {t + r + 15}')
-    print(
-        f'Цена за квадратный метр: {newInterior.calculate_price_per_meter()} исходя из нормы прибыли {newInterior.profitNormPerM} '
-        f'рублей в месяц')
-    print(f'Календарь платежей: {newInterior.full_project_payments_calendar()}')
-    print(f"Дата пятого платежа {newInterior.complectation_calendar_fifths_pay()}")
-    print(newInterior.complectation_calendar_first_pay())
-    d2 = newInterior.full_project_payments_calendar()
-    print(sum(d2.values()) / newInterior.square)
+    # print()
+    # print(f'Сегодня дата: {now_date.date()}')
+    # print(f'Дата первого платежа: {newInterior.date_start}')
+    # print(f'Дата второго платежа: {newInterior.full_project_calendar_second_pay().date()}')
+    # print(f'Дата третьего платежа: {newInterior.full_project_calendar_third_pay().date()}')
+    # print(f'Дата последнего платежа: {newInterior.full_project_calendar_final_pay().date()}')
+    # print(f'Общее время на проект: {t + r + 15}')
+    # print(
+    #     f'Цена за квадратный метр: {newInterior.calculate_price_per_meter()} исходя из нормы прибыли {newInterior.profitNormPerM} '
+    #     f'рублей в месяц')
+    # print(f'Календарь платежей: {newInterior.full_project_payments_calendar()}')
+    # print(f"Дата пятого платежа {newInterior.complectation_calendar_fifths_pay()}")
+    # print(newInterior.complectation_calendar_first_pay())
+    # d2 = newInterior.full_project_payments_calendar()
+    # print(sum(d2.values()) / newInterior.square)

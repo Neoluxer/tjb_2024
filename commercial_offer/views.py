@@ -184,12 +184,12 @@ def result(request):
     second_list_1 = make_project_list(pro_ject_2)[0]
     third_list_1 = make_project_list(pro_ject_3)[0]
 
-    price_1 = round(newInterior.overhead(),0)
-    price_2 = round(newInterior_2.overhead(),0)
-    price_3 = round(newInterior_3.overhead(),0)
-    time_1 = newInterior.time_of_visualization() + newInterior.time_of_blueprints()
-    time_2 = newInterior_2.time_of_visualization() + newInterior.time_of_blueprints()
-    time_3 = newInterior_3.time_of_visualization() + newInterior.time_of_blueprints()
+    price_1 = round(newInterior.calculate_price_per_meter(),0)
+    price_2 = round(newInterior_2.calculate_price_per_meter(),0)
+    price_3 = round(newInterior_3.calculate_price_per_meter(),0)
+    time_1 = newInterior.time_of_visualization() + newInterior.time_of_blueprints()+7
+    time_2 = newInterior_2.time_of_visualization() + newInterior.time_of_blueprints()+7
+    time_3 = newInterior_3.time_of_visualization() + newInterior.time_of_blueprints()+7
     cost_1 = int(price_1) * int(newInterior.square)
     cost_2 = int(price_2) * int(newInterior_2.square)
     cost_3 = int(price_3) * int(newInterior_3.square)
