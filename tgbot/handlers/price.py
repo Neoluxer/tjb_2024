@@ -144,9 +144,9 @@ async def answer_q5(message: types.Message, state: FSMContext):
     wageOfDesigner = 1000
     # from_db = Constants.objects.get(key='profit_norm_perm_max')
     # profit_norm_perm_max = int(from_db.value)
-    profit_norm_perm_max = 180_000
+    profit_norm_perm_max = 300_000
     # profit_norm_perm_min = int(Constants.objects.get(key='profit_norm_perm_min').value)
-    profit_norm_perm_min = 140_000
+    profit_norm_perm_min = 250_000
     # nov = int(Constants.objects.get(key='timeOfVis').value)
     nov = 1
 
@@ -180,9 +180,10 @@ async def answer_q5(message: types.Message, state: FSMContext):
         try:
             t = newInterior_min.time_of_visualization()
             r = newInterior_min.time_of_blueprints()
-            o = newInterior_min.overhead()
+            # o = newInterior_min.overhead()
+            o = newInterior_min.calculate_price_per_meter()
             p = newInterior_min.project_parts()
-            o_m = newInterior_max.overhead()
+            o_m = newInterior_max.calculate_price_per_meter()
 
             await message.answer(
                 f'Время на визуализацию: {t}\nВремя на чертежи: {r}\nОбщее время: {t + r}'
