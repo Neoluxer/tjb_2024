@@ -39,8 +39,8 @@ class ContractBase(models.Model):
     date_of_firm_registration = models.DateTimeField(verbose_name="дата регистрации", null=True)
     okpo = models.BigIntegerField(verbose_name="ОКПО", null=True, default=8729037291)
     organization_rs = models.CharField(max_length=250, verbose_name="Р/С", null=True, default='12345678912345678912')
-    bank_name = models.CharField(max_length=15, verbose_name="Название банка", null=True, default="ПАО КБ УБРИР")
-    bank_bik = models.CharField(max_length=15, verbose_name="БИК", null=True,
+    bank_name = models.CharField(max_length=50, verbose_name="Название банка", null=True, default="ПАО КБ УБРИР")
+    bank_bik = models.CharField(max_length=50, verbose_name="БИК", null=True,
                                 default="046577795")  # Поменять в handler и Class
     bank_ks = models.CharField(max_length=250, verbose_name="К/С", null=True, default='30101810900000000795')
     customer = models.ForeignKey('Organization', null=True, on_delete=models.PROTECT, verbose_name='Организация')
