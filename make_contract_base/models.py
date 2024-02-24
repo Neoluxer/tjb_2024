@@ -91,15 +91,14 @@ class PrivateContract(models.Model):
                                              null=True)
     quantity = models.IntegerField(verbose_name='Количество', null=True, default=0)
     source = models.CharField(max_length=300, verbose_name='Предмет договора', null=True, default='дизайн проект')
-    price = models.IntegerField(verbose_name='Цена', null=True, default=0)
-    square = models.IntegerField(verbose_name='Площадь', null=True, default=0)
+    price = models.IntegerField(verbose_name='Цена', null=True, default=1)
+    square = models.IntegerField(verbose_name='Площадь', null=True, default=2)
     address_of_object = models.CharField(verbose_name='Адрес объекта', null=True, default='null')
     town_object = models.CharField(verbose_name='Город', null=True, default='null')
     id = models.AutoField(primary_key=True)
     published = models.DateField(db_index=True, verbose_name="Дата", null=True)
 
-    def __str__(self):
-        result = "Договор №" + str(self.id) + "_" + str(self.address_of_object) + "_" + str(
-            int(self.price) * int(self.square)) + "_" + str(self.source) + "_" + str(self.customername) + "_" + str(
-            self.published)
-        return result
+    # def __str__(self):
+    #     result = "Договор №" + str(self.id) + "_" + str(self.address_of_object) + "_" + str(
+    #         self.price * self.square + "_" + str(self.source) + "_" + str(self.customername) + "_" + str(self.published)
+    #     return result

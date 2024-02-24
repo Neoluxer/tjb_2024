@@ -3,17 +3,17 @@ from aiogram import Dispatcher
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from make_contract_base.models import Organization
 from tgbot.Dicts.question_list import additional_questions_for_lega_contract
 from tgbot.keyboards.menu import town_menu, organisations_menu
 from tgbot.misc.additional_legal_contract import Contract_legal
 from tgbot.models.commands import add_contract, add_organization
 from tgbot.models.contract_class import Contract
 
-try:
-    org_name = Organization.objects.get(name='ОАО Астон')
-except:
-    org_name = None
+
+# try:
+#     org_name = Organization.objects.get(name='ОАО Астон')
+# except:
+#     org_name = None
 
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
@@ -95,11 +95,31 @@ async def answer_q6(message: types.Message, state: FSMContext):  # Сокращ�
         async with state.proxy() as data:
             data["org_name"] = message.text
         from make_contract_base.models import Organization
-        organisation_name = Organization.objects.get(name=message.text)
-        print(organisation_name)
-        await state.set_state(Contract_legal.FIND_ADD_FIRM)
+        if Organization.objects.get(name=message.text):
+            organisation_name = Organization.objects.get(name=message.text)
+            print(organisation_name)
+            await state.set_state(Contract_legal.FIND_ADD_FIRM)
+        else:
+            await message.answer("Нет ни одной организации в базе данных")
+            await add_organization(
+                name="ООО «Астон. Екатеринбург»",
+                mail="ekaterinburg@astongroup.ru",
+                telephonenum="+73432261854",
+                organization_full_name="ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ 'АСТОН. ЕКАТЕРИНБУРГ'",
+                organization_adress="Свердловская обл., г. Екатеринбург, ул. Кирова, д. 28",
+                organization_inn=6658445514,
+                organization_kpp=665801001,
+                ogrn=1176658089112,
+                okpo="19536720",
+                organization_rs="Р/с 40702810716540043478 в УРАЛЬСКИЙ БАНК ПАО СБЕРБАНК",
+                bank_name="БАНК ПАО СБЕРБАНК",
+                bank_bik="46577674",
+                bank_ks="30101810500000000674")
+            await message.answer("Добавлена организация 'по-умолчанию 'в базу данных")
+            await Contract_legal.next()
+
     except:
-        await message.answer("0")
+        await message.answer("Организация не найдена")
         await message.answer(additional_questions_for_lega_contract[6])
         async with state.proxy() as data:
             data["answer6"] = answer6
@@ -144,7 +164,8 @@ async def add_data_from_base(message: types.Message, state: FSMContext):  # Вн
             data["answer19"] = int(organisation_name.bank_ks)  # К/С банка
     except Exception as e:
         await message.answer("2")
-        await message.answer(str(e))
+        data["answer6"] = orgname
+        await message.answer(str(e) + " " + "строка 169")
     await message.answer("цена: ")
     await state.set_state(Contract_legal.Q20)
 
@@ -291,109 +312,148 @@ async def answer_q20(message: types.Message, state: FSMContext):  # цена
         except:
             check = False
     from make_contract_base.models import ContractBase
-    number_of_last_dogovor = ContractBase.objects.latest('number')
-    number = (int(number_of_last_dogovor.number)) + 1
     try:
-        if not check:
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print(check)
+        number_of_last_dogovor = ContractBase.objects.latest('number')
+        number = (int(number_of_last_dogovor.number)) + 1
+    except:
+        number = 1
 
-            await add_organization(
-                name=answer6,
-                mail=str(answer2),
-                telephonenum=answer5,
-                organization_full_name=answer7,
-                organization_adress=answer8,
-                organization_inn=answer11,
-                organization_kpp=answer12,
-                ogrn=answer13,
-                okpo=answer15,
-                organization_rs=answer16,
-                bank_name=answer17,
-                bank_bik=answer18,
-                bank_ks=answer19)
-        else:
-            print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-            print(check)
+    if not check:
+        await message.answer("Не найдена организация")
 
-        await message.answer("Запись в БД удалась")
-    except Exception as e:
-        await message.answer(str(e))
-
-    try:
-
-        new_dogovor = await Contract(
-            customer_delegate=str(answer9),
-            quantity=int(answer),
-            prefix=2023,
-            number=int(number),
-            price=int(message.text),
-            square=int(answer),
+        await add_organization(
+            name=answer6,
             mail=str(answer2),
-            adressofobject=str(answer3),
-            townobject=str(answer4),
-            telephonenum=str(answer5),
-            customer_firm=str(answer6),
+            telephonenum=answer5,
             organization_full_name=answer7,
             organization_adress=answer8,
-            customer_legal_basis=answer10,
             organization_inn=answer11,
             organization_kpp=answer12,
             ogrn=answer13,
-            date_of_firm_registration=answer14,
             okpo=answer15,
             organization_rs=answer16,
             bank_name=answer17,
             bank_bik=answer18,
             bank_ks=answer19)
 
-        doc = new_dogovor.text_legal_entity
-        new_dogovor.path = 'media/files/XLS/'
-        #new_dogovor.path = 'files/XLS/'
-        new_dogovor.to_word_legal()
-        with open(f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx', 'rb') as g:
-            await message.answer_document(g)  # Тут происходит отсылка документа пользователь.
-        with open(f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.html', 'w',
-                  encoding='utf-8') as Html_file:
-            Html_file.write(doc)
-            Html_file.close()
-        file = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.html'
-        output = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
-        root_path = 'media/files/XLS/'
-        root_path_2 = 'files/XLS/'
-        output2 = f'{root_path_2}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
-        #  media/files/XLS/contract_legal_22_2023.pdf
-        path_wkhtmltopdf = 'media/wkhtmltopdf/bin/wkhtmltopdf.exe'
-        config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-        pdfkit.from_file(file, output, configuration=config)
+        await message.answer(str(check))
+        await message.answer(str(answer9) + "  customer_delegate")
+        await message.answer(str(answer) + "  quantity")
+        await message.answer(str(number) + "  number")
+        await message.answer(str(message.text) + "  price")
+        await message.answer(str(answer2) + "  mail")
+        await message.answer(str(answer3) + "  adressofobject")
+        await message.answer(str(answer4) + "  townobject")
+        await message.answer(str(answer5) + "  telephonenum")
+        await message.answer(str(answer6) + "  customer_firm")
+        await message.answer(str(answer7) + "  organization_full_name")
+        await message.answer(str(answer8) + "  organization_adress")
+        await message.answer(str(answer10) + "  customer_legal_basis")
+        await message.answer(str(answer11) + "  organization_inn")
+        await message.answer(str(answer12) + "  organization_kpp")
+        await message.answer(str(answer13) + "  ogrn")
+        await message.answer(str(answer14) + "  date_of_firm_registration")
+        await message.answer(str(answer15) + "  okpo")
+        await message.answer(str(answer16) + "  organization_rs")
+        await message.answer(str(answer17) + "  bank_name")
+        await message.answer(str(answer18) + "  bank_bik")
+        await message.answer(str(answer19) + "  bank_ks")
 
-        # with open(output, 'rb') as pdf_file:
-        #     await message.answer_document(pdf_file)
-        await add_contract(customername=answer9,
-                           quantity=int(answer),
-                           price=int(message.text),
-                           adressofobject=str(answer3),
-                           mail=str(answer2),
-                           total_cost=int(message.text) * int(answer),
-                           townobject=str(answer4),
-                           telephonenum=answer5,
-                           customer_firm=answer6,
-                           organization_full_name=answer7,
-                           organization_adress=answer8,
-                           customer_legal_basis=answer10,
-                           organization_inn=answer11,
-                           organization_kpp=answer12,
-                           ogrn=answer13,
-                           okpo=answer15,
-                           organization_rs=answer16,
-                           bank_name=answer17,
-                           bank_bik=answer18,
-                           bank_ks=answer19,
-                           contract_file=f'{root_path_2}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx')
-        await state.reset_state(with_data=True)
-    except Exception as e:
-        await message.reply("Не смог создать экземпляр класса" + str(e))
-        await state.reset_state(with_data=True)
+    else:
+        await message.answer(str(check))
+        await message.answer(str(answer9) + "  customer_delegate")
+        await message.answer(str(answer) + "  quantity")
+        await message.answer(str(number) + "  number")
+        await message.answer(str(message.text) + "  price")
+        await message.answer(str(answer2) + "  mail")
+        await message.answer(str(answer3) + "  adressofobject")
+        await message.answer(str(answer4) + "  townobject")
+        await message.answer(str(answer5) + "  telephonenum")
+        await message.answer(str(answer6) + "  customer_firm")
+        await message.answer(str(answer7) + "  organization_full_name")
+        await message.answer(str(answer8) + "  organization_adress")
+        await message.answer(str(answer10) + "  customer_legal_basis")
+        await message.answer(str(answer11) + "  organization_inn")
+        await message.answer(str(answer12) + "  organization_kpp")
+        await message.answer(str(answer13) + "  ogrn")
+        await message.answer(str(answer14) + "  date_of_firm_registration")
+        await message.answer(str(answer15) + "  okpo")
+        await message.answer(str(answer16) + "  organization_rs")
+        await message.answer(str(answer17) + "  bank_name")
+        await message.answer(str(answer18) + "  bank_bik")
+        await message.answer(str(answer19) + "  bank_ks")
+
+    new_dogovor = await Contract(
+        customer_delegate=str(answer9),
+        quantity=int(answer),
+        prefix=2023,
+        number=int(number),
+        price=int(message.text),
+        square=int(answer),
+        mail=str(answer2),
+        adressofobject=str(answer3),
+        townobject=str(answer4),
+        telephonenum=str(answer5),
+        customer_firm=str(answer6),
+        organization_full_name=answer7,
+        organization_adress=answer8,
+        customer_legal_basis=answer10,
+        organization_inn=answer11,
+        organization_kpp=answer12,
+        ogrn=answer13,
+        date_of_firm_registration=answer14,
+        okpo=answer15,
+        organization_rs=answer16,
+        bank_name=answer17,
+        bank_bik=answer18,
+        bank_ks=answer19)
+
+    # document = new_dogovor.text_legal_entity
+    new_dogovor.path = 'media/files/XLS/'
+    # new_dogovor.path = 'files/XLS/'
+    new_dogovor.to_word_legal()
+    with open(f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx', 'rb') as g:
+        await message.answer_document(g)  # Тут происходит отсылка документа пользователь.
+    # with open(f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.html', 'w',
+    #           encoding='utf-8') as Html_file:
+    #     Html_file.write(document)
+    #     Html_file.close()
+    #  file = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.html'
+    #  output = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
+    #  root_path = 'media/files/XLS/'
+    root_path_2 = 'files/XLS/'
+    #  output2 = f'{root_path_2}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
+    #  media/files/XLS/contract_legal_22_2023.pdf
+    # path_wkhtmltopdf = 'media/wkhtmltopdf/bin/wkhtmltopdf.exe'
+    # config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    # pdfkit.from_file(file, output, configuration=config)
+    #
+    # with open(output, 'rb') as pdf_file:
+    #     await message.answer_document(pdf_file)
+    await message.answer("396 string")
+    await add_contract(customername=answer9,
+                       quantity=int(answer),
+                       price=int(message.text),
+                       adressofobject=str(answer3),
+                       mail=str(answer2),
+                       total_cost=int(message.text) * int(answer),
+                       townobject=str(answer4),
+                       telephonenum=answer5,
+                       customer_firm=answer6,
+                       organization_full_name=answer7,
+                       organization_adress=answer8,
+                       customer_legal_basis=answer10,
+                       organization_inn=answer11,
+                       organization_kpp=answer12,
+                       ogrn=answer13,
+                       okpo=answer15,
+                       organization_rs=answer16,
+                       bank_name=answer17,
+                       bank_bik=answer18,
+                       bank_ks=answer19,
+                       contract_file=f'{root_path_2}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx')
+
+    await state.reset_state(with_data=True)
 
 
 def register_add_legal_contract(dp: Dispatcher):
