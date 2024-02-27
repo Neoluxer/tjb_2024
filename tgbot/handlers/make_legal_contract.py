@@ -10,12 +10,6 @@ from tgbot.models.commands import add_contract, add_organization
 from tgbot.models.contract_class import Contract
 
 
-# try:
-#     org_name = Organization.objects.get(name='ОАО Астон')
-# except:
-#     org_name = None
-
-
 async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Действие отменено")
@@ -336,52 +330,8 @@ async def answer_q20(message: types.Message, state: FSMContext):  # цена
             bank_bik=answer18,
             bank_ks=answer19)
 
-        await message.answer(str(check))
-        await message.answer(str(answer9) + "  customer_delegate")
-        await message.answer(str(answer) + "  quantity")
-        await message.answer(str(number) + "  number")
-        await message.answer(str(message.text) + "  price")
-        await message.answer(str(answer2) + "  mail")
-        await message.answer(str(answer3) + "  adressofobject")
-        await message.answer(str(answer4) + "  townobject")
-        await message.answer(str(answer5) + "  telephonenum")
-        await message.answer(str(answer6) + "  customer_firm")
-        await message.answer(str(answer7) + "  organization_full_name")
-        await message.answer(str(answer8) + "  organization_adress")
-        await message.answer(str(answer10) + "  customer_legal_basis")
-        await message.answer(str(answer11) + "  organization_inn")
-        await message.answer(str(answer12) + "  organization_kpp")
-        await message.answer(str(answer13) + "  ogrn")
-        await message.answer(str(answer14) + "  date_of_firm_registration")
-        await message.answer(str(answer15) + "  okpo")
-        await message.answer(str(answer16) + "  organization_rs")
-        await message.answer(str(answer17) + "  bank_name")
-        await message.answer(str(answer18) + "  bank_bik")
-        await message.answer(str(answer19) + "  bank_ks")
-
     else:
-        await message.answer(str(check))
-        await message.answer(str(answer9) + "  customer_delegate")
-        await message.answer(str(answer) + "  quantity")
-        await message.answer(str(number) + "  number")
-        await message.answer(str(message.text) + "  price")
-        await message.answer(str(answer2) + "  mail")
-        await message.answer(str(answer3) + "  adressofobject")
-        await message.answer(str(answer4) + "  townobject")
-        await message.answer(str(answer5) + "  telephonenum")
-        await message.answer(str(answer6) + "  customer_firm")
-        await message.answer(str(answer7) + "  organization_full_name")
-        await message.answer(str(answer8) + "  organization_adress")
-        await message.answer(str(answer10) + "  customer_legal_basis")
-        await message.answer(str(answer11) + "  organization_inn")
-        await message.answer(str(answer12) + "  organization_kpp")
-        await message.answer(str(answer13) + "  ogrn")
-        await message.answer(str(answer14) + "  date_of_firm_registration")
-        await message.answer(str(answer15) + "  okpo")
-        await message.answer(str(answer16) + "  organization_rs")
-        await message.answer(str(answer17) + "  bank_name")
-        await message.answer(str(answer18) + "  bank_bik")
-        await message.answer(str(answer19) + "  bank_ks")
+        pass
 
     new_dogovor = await Contract(
         customer_delegate=str(answer9),
@@ -408,29 +358,12 @@ async def answer_q20(message: types.Message, state: FSMContext):  # цена
         bank_bik=answer18,
         bank_ks=answer19)
 
-    # document = new_dogovor.text_legal_entity
     new_dogovor.path = 'media/files/XLS/'
-    # new_dogovor.path = 'files/XLS/'
     new_dogovor.to_word_legal()
     with open(f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx', 'rb') as g:
         await message.answer_document(g)  # Тут происходит отсылка документа пользователь.
-    # with open(f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.html', 'w',
-    #           encoding='utf-8') as Html_file:
-    #     Html_file.write(document)
-    #     Html_file.close()
-    #  file = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.html'
-    #  output = f'{new_dogovor.path}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
-    #  root_path = 'media/files/XLS/'
     root_path_2 = 'files/XLS/'
-    #  output2 = f'{root_path_2}contract_legal_{new_dogovor.number}_{new_dogovor.pefix}.docx'
-    #  media/files/XLS/contract_legal_22_2023.pdf
-    # path_wkhtmltopdf = 'media/wkhtmltopdf/bin/wkhtmltopdf.exe'
-    # config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-    # pdfkit.from_file(file, output, configuration=config)
-    #
-    # with open(output, 'rb') as pdf_file:
-    #     await message.answer_document(pdf_file)
-    await message.answer("396 string")
+    await message.answer("Запись прошла успешно")
     await add_contract(customername=answer9,
                        quantity=int(answer),
                        price=int(message.text),
