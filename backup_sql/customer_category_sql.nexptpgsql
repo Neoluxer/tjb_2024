@@ -1,0 +1,44 @@
+{
+  "Version": 1.2,
+  "General": {
+    "Project": "",
+    "ProjectOwnerNavicatID": "",
+    "Server": "localhost bot",
+    "Catalog": "django_db_new",
+    "Schema": "public",
+    "ExportType": "SQL",
+    "ExportDirectoryBookmark": "",
+    "ExportDirectoryPath": "",
+    "TargetCodepage": 65001,
+    "AddTimeStamp": false,
+    "TimeStampFormat": "",
+    "IncludeTitle": true,
+    "FieldDelimiter": "\t",
+    "DateFormat": "DMY",
+    "DateSeparator": "/",
+    "ZeroPaddingDate": false,
+    "TimeSeparator": ":",
+    "DecimalSeparator": ".",
+    "TextQualifier": "\"",
+    "RowDelimiter": "CRLF",
+    "XMLFormat": "Element",
+    "UseBase64": true,
+    "AppendRecord": false,
+    "BlankIfZero": false,
+    "ContinueOnError": true,
+    "CloudInstanceName": "",
+    "UseJsonLegacyFormat": false
+  },
+  "Objects": [
+    {
+      "Object": {
+        "Name": "addprofit_customer_category",
+        "ObjectType": "TableNormal_PGSQL"
+      },
+      "TargetName": "addprofit_customer_category",
+      "TargetFilePath": "C:\\Users\\User\\Desktop\\addprofit_customer_category.sql",
+      "AllFields": true,
+      "Fields": []
+    }
+  ]
+}
