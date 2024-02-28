@@ -98,7 +98,6 @@ class PrivateContract(models.Model):
     id = models.AutoField(primary_key=True)
     published = models.DateField(db_index=True, verbose_name="Дата", null=True)
 
-    # def __str__(self):
-    #     result = "Договор №" + str(self.id) + "_" + str(self.address_of_object) + "_" + str(
-    #         self.price * self.square + "_" + str(self.source) + "_" + str(self.customername) + "_" + str(self.published)
-    #     return result
+    def __str__(self):
+        result = "Договор №" + str(self.id) + "_" + str(self.address_of_object) + "_" + str(self.price) + "_" + str(self.source) + "_" + str(self.customername) + "_" + str(self.published)
+        return result
