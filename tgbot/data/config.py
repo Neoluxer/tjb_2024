@@ -2,6 +2,7 @@ CONTRACT_PATH = 'media/files/XLS/' # По этому пути записывае
 CONTRACT_PATH2 = 'files/XLS/' # Сюда не записывает,
 # но этот путь нужен для того, чтобы в админке формировался правильный путь
 LOG_PATH = 'media/files/logs.txt'
+CUSTOMER_PATH = 'media/files/customer.txt'
 PICTURE_PATH = 'media/files/PICTURES/'
 EXEL_PATH = 'files/XLS/'
 EXEL_PATH2 = 'media/files/XLS/'

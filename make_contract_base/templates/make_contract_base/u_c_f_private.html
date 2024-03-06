@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Neoluxe CRM Offer</title>
+</head>
+<body style="background-color: darkgray">
+<div class="container-fluid" style="background-color: darkgray ; padding: 30px">
+
+    <h1>Создание Договора с физ.лицом</h1>
+    <p class="text-start">Создание Договора с физическим лицом</p>
+    <a href="http://localhost:8000/admin">Админ панель</a><br>
+    <a href="http://localhost:8000/">Главная страница</a><br><br>
+    <div class="my-form">
+        <form action="{% url 'result_contract' %}">
+
+            <div class="mb-3">
+                <h5>ФИО заказчика</h5>
+                <select class="form-select" multiple aria-label="Выбор из набора услуг" name="choice">
+
+                    {% for people in customers_names_list %}
+                        <option>{{ people }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+                <h5>Город</h5>
+                <label for="exampleFormControlTextarea1" class="form-label">
+
+                    <textarea class="form-control" name="town">Москва</textarea>
+                </label>
+            </div>
+
+
+            <div class="mb-3">
+                <h5>Адрес объекта</h5>
+                <label for="exampleFormControlTextarea1" class="form-label">
+
+                    <textarea class="form-control" name="addres">Набережная Москвы реки, дом 23</textarea>
+                </label>
+            </div>
+            <div class="mb-3">
+                <h5>Выбор услуг Вариант 1</h5>
+                <select class="form-select" multiple aria-label="Выбор из набора услуг" name="choice">
+                    <option selected>Выберите услугу из списка:</option>
+                    <option value="1" name="1">обмеры</option>
+                    <option value="2" name="2">электрика</option>
+                    <option value="3" name="3">планировка</option>
+                    <option value="4" name="4">кладочный план</option>
+                    <option value="5" name="5">демонтаж</option>
+                    <option value="6" name="6">план ТП</option>
+                    <option value="7" name="7">развертки</option>
+                    <option value="8" name="8">ведомость</option>
+                    <option value="9" name="9">план пола</option>
+                    <option value="10" name="10">план потолка</option>
+                    <option value="11" name="11">мебельные конструкции</option>
+                    <option value="12" name="12">визуализация</option>
+                    <option value="13" name="13">фор-проект</option>
+                    <option value="14" name="14">альбом планировочных решений</option>
+                    <option value="15" name="15">обложка</option>
+                    <option value="16" name="16">электрика освещение</option>
+                    <option value="17" name="17">электрика розетки</option>
+                    <option value="18" name="18">узлы потолка</option>
+                    <option value="19" name="19">примечание</option>
+                    <option value="20" name="20">ведомость электроустановки</option>
+                    <option value="21" name="21">ведомость дверей</option>
+                    <option value="22" name="22">схема разверток стен</option>
+                    <option value="23" name="23">cхема сан.тех.приборов</option>
+                    <option value="24" name="24">комплектация</option>
+                    <option value="25" name="25">авторский надзор</option>
+                    <option value="26" name="26">проект с комплектацией</option>
+                    <option value="27" name="27" selected>полный дизайн проект</option>
+                    <option value="28" name="28">проект с авторским надзором</option>
+                    <option value="29" name="29">проект со схематичной визуализацией</option>
+
+                </select>
+
+
+            </div>
+
+
+            <h5>Площадь объекта</h5>
+            <div class="input-group mb-3">
+                <span class="input-group-text">м.кв.</span>
+                <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
+                       name="area_meters" value="100">
+            </div>
+            <h5>Стоимость за м.кв.</h5>
+            <div class="input-group mb-3">
+                <span class="input-group-text">price</span>
+                <input type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"
+                       name="rooms" value="7">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

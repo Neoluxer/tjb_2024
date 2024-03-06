@@ -67,8 +67,9 @@ async def answer_q4(message: types.Message, state: FSMContext):
             income_id = 0
 
         try:
+            await message.answer('Не забудьте отложить с этой суммы '+str(answer2*30/100)+'рублей')
 
-            await message.answer('<a href="http://127.0.0.1:8000/admin/addprofit/addprofits/">admin panel</a>',parse_mode="HTML")  # Источник дохода
+            await message.answer('<a href="http://192.168.31.150:8000/admin/addprofit/addprofits/">admin panel</a>',parse_mode="HTML")  # Источник дохода
 
             await add_profit(customer = str(answer4), price = float(answer2), description = str(answer),
                              category = int(1))

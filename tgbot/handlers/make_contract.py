@@ -13,6 +13,7 @@ from tgbot.misc.Contract2 import Contract2
 from tgbot.models.commands import add_private_contract
 from tgbot.models.commands import add_private_person
 from tgbot.models.contract_class import Contract
+from tgbot.data import config
 
 root_path = 'media/files'
 
@@ -49,12 +50,20 @@ async def run_default_contract(message: types.Message):
 
 
 async def answer_q1(message: types.Message, state: FSMContext):
+
     number_of_last_invoice = PrivateContract.objects.latest('id')
     dogovor_number = number_of_last_invoice.id
     await message.answer("Номер текущего договора  " + str(dogovor_number))
     await message.answer("PrivateContract.objects.latest id  " + str(PrivateContract.objects.latest('id')))
 
     answer = message.text
+    with open('media/files/customers.txt', 'a', encoding='utf-8') as f:
+        f.write(str(answer)+"\n")
+    with open('media/files/customers.txt', 'r', encoding='utf-8') as r:
+        last_line = r.readlines()[-1]
+
+    await message.answer(str(last_line)+" записано в текстовый файл")
+    await message.reply('<a href="http://localhost:8000/media/files/customers.txt">Log_2</a>', parse_mode="HTML")
     good_fio_check = answer.split()
     if (len(good_fio_check)) == 3:
         async with state.proxy() as data:
