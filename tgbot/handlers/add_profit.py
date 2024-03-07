@@ -73,6 +73,16 @@ async def answer_q4(message: types.Message, state: FSMContext):
 
             await add_profit(customer = str(answer4), price = float(answer2), description = str(answer),
                              category = int(1))
+
+            result_string = f'{str(datetime.now())} Имя: {answer4}, Доход: {answer2},Источник дохода: {answer},Категория платежа: {answer3}'
+
+            with open('media/files/profit.txt', 'a', encoding='utf-8') as f:
+                f.write(str(result_string) + "\n")
+            with open('media/files/profit.txt', 'r', encoding='utf-8') as r:
+                last_line = r.readlines()[-1]
+                last_line_f = f'{last_line=}'
+            await message.answer(str(last_line_f))
+
             await state.finish()
 
         except Exception as e:
