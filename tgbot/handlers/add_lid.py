@@ -3,9 +3,10 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 
-from tgbot.keyboards.menu import town_menu,yes_or_no,source,services
+from tgbot.keyboards.menu import town_menu, yes_or_no, source, services
 from tgbot.misc.lids_input_states import LidsStates
 from tgbot.models.commands import add_lid
+from datetime import datetime
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
@@ -56,7 +57,7 @@ async def input_source(message: types.Message, state: FSMContext):
     description = message.text
     async with state.proxy() as data:
         data["description"] = description
-    await message.answer("Откуда о нас узнали?",reply_markup=source)
+    await message.answer("Откуда о нас узнали?", reply_markup=source)
     await state.set_state(LidsStates.INPUT_CITY)
 
 
@@ -90,14 +91,13 @@ async def input_isnew(message: types.Message, state: FSMContext):
         isnew = message.text
         async with state.proxy() as data:
             data["isnew"] = isnew
-        await message.answer("Какая стоимость озвучена за м.кв.?",reply_markup=ReplyKeyboardRemove())
+        await message.answer("Какая стоимость озвучена за м.кв.?", reply_markup=ReplyKeyboardRemove())
         await state.set_state(LidsStates.FINAL)
     else:
         await state.set_state(LidsStates.INPUT_IS_NEW)
 
 
 async def final(message: types.Message, state: FSMContext):
-
     if message.text.isdigit():
         price = int(message.text)
         async with state.proxy() as data:
@@ -119,29 +119,35 @@ async def final(message: types.Message, state: FSMContext):
             # Тут записываем данные в базу данных
             frase = f"Запись {name} в файл прошла успешно"
             await message.reply(frase)
-            try:
-                await add_lid(new=isnew, name=name, email=email, town=town, telephone=telephone,
-                              area=int(area), description=description, source=source,
-                              what_service=what_service,
-                              our_price=our_price, result=result)
 
-
-
-            except Exception as e:
-                await message.reply(str(e))
-                await state.finish()
-
-            await state.finish()
+            await add_lid(new=isnew, name=name, email=email, town=town, telephone=telephone,
+                          area=int(area), description=description, source=source,
+                          what_service=what_service,
+                          our_price=our_price, result=result)
 
         except Exception as e:
-            await message.answer(str(e))
-            await state.finish()
+            await message.answer(repr(e))
+
 
     else:
         print('is not digit')
         await message.answer("Вы ввели не численное значение\n"
                              "Введите число 1 или 0:")
         await state.set_state(LidsStates.INPUT_IS_NEW)
+
+    result_string = f'{str(datetime.now())} Имя: {name}, email: {email},Описание: {description},' \
+                    f'Предложена цена: {our_price}, Услуга нужна: {what_service},Новый ли заказчик: {new},' \
+                    f' Город: {town},Телефон: {telephone}, Площадь: {area}, Источник: {source}, Результат: {result}'
+
+    with open('media/files/lids.txt', 'a', encoding='utf-8') as f:
+        f.write(str(result_string) + "\n")
+    with open('media/files/lids.txt', 'r', encoding='utf-8') as r:
+        last_line = r.readlines()[-1]
+        last_line_f = f'{last_line=}'
+    await message.answer(str(last_line_f))
+
+    await state.finish()
+
 
 
 def register_add_lid(dp: Dispatcher):
