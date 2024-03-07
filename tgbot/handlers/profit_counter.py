@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
+from addprofit.models import Customer_category
 from aiogram import Dispatcher
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardRemove
-from addprofit.models import AddProfits, Customer_category
 from tgbot.keyboards.menu import years, months
 from tgbot.misc.profit_states import Profit_filter
 from tgbot.models.profit_filter import average_profit, get_difference_is_month, get_sum_all_prices
@@ -78,9 +78,6 @@ async def enter_month(message: types.Message, state: FSMContext):
     zaur_profit = await get_sum_is_customer_name("Хубецов Заурбек")
     drozdov_profit = await get_sum_is_customer_name("Дроздов Константин")
 
-
-
-
     comlectation_profit = await percentage_of_income_for_period(year=answer1, month=answer2, category=1)
     first_profit = await percentage_of_income_for_period(year=answer1, month=answer2, category=3)
     second_profit = await percentage_of_income_for_period(year=answer1, month=answer2, category=4)
@@ -95,39 +92,56 @@ async def enter_month(message: types.Message, state: FSMContext):
     architect_profit = await percentage_of_income_for_period(year=answer1, month=answer2, category=11)
     consult_profit = await percentage_of_income_for_period(year=answer1, month=answer2, category=13)
     template = "указанный период"
+    profit_current_month_format = f'{profit_current_month:_.2f}' # Отформатированная прибыль за месяц
+    profit_current_year_format = f'{profit_current_year:_.2f}' # Отформатированная прибыль за год
+    profit_current_month_last_year_format = f'{profit_current_month_last_year:_.2f}'
+    difference_f = f'{difference:_.2f}'
+    avprofit_f = f'{avprofit:_.2f}'
+    complectation_profit_f = f'{complectation_profit:_.2f}'
+    project_profit_all_f = f'{project_profit_all:_.2f}'
+    supervision_profit_f = f'{supervision_profit:_.2f}'
+    measurements_profit_f = f'{measurements_profit:_.2f}'
+    floor_plan_profit_f = f'{floor_plan_profit:_.2f}'
+    fore_project_profit_f = f'{fore_project_profit:_.2f}'
+    all_profit_f = f'{all_profit:_.2f}'
+    comlectation_profit_f = f'{comlectation_profit:_.2f}'
+    inspection_profit_f = f'{inspection_profit:_.2f}'
+    measuring_profit_f = f'{measuring_profit:_.2f}'
+    fore_project_profit_profit_f = f'{fore_project_profit_profit:_.2f}'
+    floorplan_profit_f = f'{floorplan_profit:_.2f}'
 
     await message.answer(f'{cust_name}')
     await message.answer("<b>ОСНОВНЫЕ ПОКАЗАТЕЛИ:</b>")
-    await message.answer(f"Доход за указанный месяц: <b>{profit_current_month}</b> рублей\n"
-                         f"Доход за указаный год: <b>{profit_current_year}</b> рублей\n"
-                         f"Доход за аналогичный период прошлого года: <b>{profit_current_month_last_year}</b> рублей\n"
-                         f"Разница в доходах с прошлым годом: <b>{difference}</b> рублей\n"
-                         f"Средний доход в месяц за весь период: <b>{avprofit}</b> рублей\n\n"
-                         f"Доходы с комиссионных за весь период: <b>{int(complectation_profit)}</b> рублей\n"
-                         f"Доходы с проектов за весь период: <b>{int(project_profit_all)}</b> рублей\n"
-                         f"Доходы с авторского надзора за весь период: <b>{int(supervision_profit)}</b> рублей\n"
-                         f"Доходы с обмеров за весь период: <b>{int(measurements_profit)}</b> рублей\n"
-                         f"Доходы с планировки за весь период: <b>{int(floor_plan_profit)}</b> рублей\n\n"
-                         f"Доходы с фор-проекта за весь период: <b>{int(fore_project_profit)}</b> рублей\n"
-                         f"Весь доход с 2018 года: <b>{int(all_profit)}</b> рублей\n"
-                         f"Доход с комплектации за {template} <b>{round(comlectation_profit), 0}</b> %\n"
+    await message.answer(f"Доход за указанный месяц: <b>{profit_current_month_format}</b> рублей\n"
+                         f"Доход за указаный год: <b>{profit_current_year_format}</b> рублей\n"
+                         f"Доход за аналогичный период прошлого года: <b>{profit_current_month_last_year_format}</b> рублей\n"
+                         f"Разница в доходах с прошлым годом: <b>{difference_f}</b> рублей\n"
+                         f"Средний доход в месяц за весь период: <b>{avprofit_f}</b> рублей\n\n"
+                         f"Доходы с комиссионных за весь период: <b>{complectation_profit_f}</b> рублей\n"
+                         f"Доходы с проектов за весь период: <b>{project_profit_all_f}</b> рублей\n"
+                         f"Доходы с авторского надзора за весь период: <b>{supervision_profit_f}</b> рублей\n"
+                         f"Доходы с обмеров за весь период: <b>{measurements_profit_f}</b> рублей\n"
+                         f"Доходы с планировки за весь период: <b>{floor_plan_profit_f}</b> рублей\n\n"
+                         f"Доходы с фор-проекта за весь период: <b>{fore_project_profit_f}</b> рублей\n"
+                         f"Весь доход с 2018 года: <b>{all_profit_f}</b> рублей\n"
+                         f"Доход с комплектации за {template} <b>{comlectation_profit_f}</b> %\n"
                          f"Доход с проектов за {template} <b>{round(first_profit + second_profit + third_profit + end_profit), 0}</b> %\n"
-                         f"Доход с авторского надзора за {template} <b>{round(inspection_profit), 0}</b> %\n\n"
-                         f"Доход с обмеров за {template} <b>{round(measuring_profit), 0}</b> %\n"
-                         f"Доход с фор-проектов за {template} <b>{round(fore_project_profit_profit), 0}</b> %\n"
-                         f"Доход с планировок за {template} <b>{round(floorplan_profit), 0}</b> %\n"
-                         f"Прочие доходы за {template} <b>{round(unknown_profit + consult_profit + adv_profit ), 0} </b> % \n\n"
+                         f"Доход с авторского надзора за {template} <b>{inspection_profit_f}</b> %\n\n"
+                         f"Доход с обмеров за {template} <b>{measuring_profit_f}</b> %\n"
+                         f"Доход с фор-проектов за {template} <b>{fore_project_profit_profit_f}</b> %\n"
+                         f"Доход с планировок за {template} <b>{floorplan_profit_f}</b> %\n"
+                         f"Прочие доходы за {template} <b>{round(unknown_profit + consult_profit + adv_profit), 0} </b> % \n\n"
 
                          )
     await message.answer("<b>ДОХОДЫ ОТ ОСНОВНЫХ КЛИЕНТОВ:</b>")
     await message.answer(f"Общий доход с {cust_name}: <b>{first_customer_profit}</b> рублей\n")
-    #await message.answer(f"Общий доход с Виталия Зубера: <b>{zuber_profit / 1000000}</b> млн. рублей\n"
-                        # f"Общий доход с Телелинского Дмитрия: <b>{(telelinskiy_profit+chadigov_profit) / 1000000}</b> млн. рублей\n"
-                         #f"Общий доход с Петуховой Екатерины: <b>{petuhova_profit / 1000000}</b> млн. рублей\n"
-                         #f"Общий доход с Нягу Сергея: <b>{nyagu_profit / 1000000}</b> млн. рублей\n"
-                         #f"Совокупный доход с ключевых заказчиков: <b>{(petuhova_profit + telelinskiy_profit + zuber_profit + drozdov_profit + zaur_profit + trapezdnikov_profit) / 1000000}</b> млн. рублей\n"
-                        # f"Общий доход с Астон: <b>{(drozdov_profit + trapezdnikov_profit) / 1000000}</b> млн. рублей",
-                        # reply_markup=ReplyKeyboardRemove())
+    await message.answer(f"Общий доход с Виталия Зубера: <b>{zuber_profit / 1000000}</b> млн. рублей\n"
+                         f"Общий доход с Телелинского Дмитрия: <b>{(telelinskiy_profit + chadigov_profit) / 1000000}</b> млн. рублей\n"
+                         f"Общий доход с Петуховой Екатерины: <b>{petuhova_profit / 1000000}</b> млн. рублей\n"
+                         f"Общий доход с Нягу Сергея: <b>{nyagu_profit / 1000000}</b> млн. рублей\n"
+                         f"Совокупный доход с ключевых заказчиков: <b>{(petuhova_profit + telelinskiy_profit + zuber_profit + drozdov_profit + zaur_profit + trapezdnikov_profit) / 1000000}</b> млн. рублей\n"
+                         f"Общий доход с Астон: <b>{(drozdov_profit + trapezdnikov_profit) / 1000000}</b> млн. рублей",
+                         reply_markup=ReplyKeyboardRemove())
     await state.finish()
 
 
