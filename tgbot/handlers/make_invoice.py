@@ -148,7 +148,11 @@ async def answer_q6(message: types.Message, state: FSMContext):
     print(f'name_of_invoice = {new_akt.name_of_invoice}')
     with open(f'{EXEL_PATH2}invoice_{summa}_{number_1}.xlsx', 'rb') as docx_file:  # Открывает и отправляет в бот
         await message.answer_document(docx_file)
-    await message.answer('<a href="http://127.0.0.1:8000/admin/invoice/invoice/">admin panel</a>',
+
+    with open(f'{EXEL_PATH2}akt_{summa}_{number_1}.xlsx', 'rb') as akt_file:  # Открывает и отправляет в бот
+        await message.answer_document(akt_file)
+
+    await message.answer('<a href="http://192.168.31.150:8000/admin/invoice/invoice/">admin panel</a>',
                          parse_mode="HTML")
     await state.finish()  # Сбрасывается состояние и сбрасываются данные
 
