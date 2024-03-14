@@ -1,0 +1,1 @@
+INSERT INTO "auth_user" ("id", "password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES (1, 'pbkdf2_sha256$600000$2D25AftsvQbM6pMv0ygMIf$Brx20ZsADMWfuXIFFEeHslFU/K24NRmw2+8nynCpRow=', '2024-03-06 15:10:27.003117+00', 't', 'admin', '', '', 'neoluxe@yandex.ru', 't', 't', '2024-03-06 08:21:13.08227+00');

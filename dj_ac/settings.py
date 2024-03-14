@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'addprofit.apps.AddprofitConfig',
     'lids.apps.LidsConfig',
     'invoice.apps.InvoiceConfig',
+    'builders.apps.BuildersConfig',
     'customer.apps.CustomerConfig',
+    'expenses.apps.ExpensesConfig',
     'make_contract_base.apps.MakeContractConfig',
     'constants.apps.ConstantsConfig',
 
