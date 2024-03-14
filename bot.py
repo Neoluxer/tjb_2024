@@ -11,6 +11,7 @@ from tgbot.handlers.echo import register_echo
 from tgbot.handlers.start import register_user
 from tgbot.handlers.make_invoice import register_add_invoice
 from tgbot.handlers.add_profit import register_add_profit
+from tgbot.handlers.add_expenses import register_add_expenses
 from tgbot.handlers.profit_counter import register_count_profit
 from tgbot.handlers.add_lid import register_add_lid
 from tgbot.handlers.price import register_price
@@ -41,6 +42,7 @@ def register_all_handlers(dp):
     register_add_profit(dp)
     register_price(dp)
     register_add_lid(dp)
+    register_add_expenses(dp)
     register_add_invoice(dp)
     register_admin(dp)
     register_user(dp)

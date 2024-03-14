@@ -6,6 +6,7 @@ async def set_default_commands(dp):
         types.BotCommand("start", "Запустить бота"),
         types.BotCommand("add_lid", "Ввести заявку"),
         types.BotCommand("add_profit", "Внести доход"),
+        types.BotCommand("add_expenses", "Внести расход"),
         types.BotCommand("cancel", "Сброс"),
         types.BotCommand("invoice", "Создать счет и акт"),
         types.BotCommand("worksheet_link", "Ссылка на анкету"),

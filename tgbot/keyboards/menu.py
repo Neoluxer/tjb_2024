@@ -243,3 +243,17 @@ income_menu = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
+expenses_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="ФОТ"),
+            KeyboardButton(text="на рекламу"),
+            KeyboardButton(text="налоги"),
+            KeyboardButton(text="прочие расходы"),
+
+        ],
+
+    ],
+    resize_keyboard=True
+)

@@ -17,6 +17,7 @@ from addprofit.models import AddProfits, Customer_category
 from invoice.models import Invoice
 from app_telegram.models import TGUser
 from customer.models import Private_person
+from expenses.models import AddExpenses
 
 logger = logging.getLogger(__name__)
 
@@ -177,7 +178,6 @@ def add_private_contract(customername, quantity, price, address_of_object, town_
         print("Добавляем")
     print("* add_private_contract")
 
-
     try:
         print("try (new_contract = ContractBase()")
         new_contract = PrivateContract(customername=new_customer,
@@ -254,6 +254,19 @@ def add_profit(customer, price, description, category):
         print("Запись прошла успешно")
     except Exception as e:
         # todo Нужна проверка наличия в Customer_category с добавлением
+        print("Запись не успешна")
+        print(e)
+
+
+@sync_to_async
+def add_expenses(description: str, price: float, category: int):
+    try:
+        new_expenses: AddExpenses = AddExpenses(description=description,
+                                                price=price,
+                                                category=category)
+        new_expenses.save()
+        print("Запись прошла успешно")
+    except Exception as e:
         print("Запись не успешна")
         print(e)
 
